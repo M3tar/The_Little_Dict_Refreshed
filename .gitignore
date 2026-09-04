@@ -1,0 +1,25 @@
+# macOS / Windows
+.DS_Store
+**/.DS_Store
+._*
+Thumbs.db
+
+# 词典正文与完整发布包
+/TLD.mdx
+/releases/
+*.zip
+
+# 本地开发资料
+/pic/
+/tests/
+/docs/
+
+# Node.js 与测试产物
+/node_modules/
+/playwright-report/
+/test-results/
+*.log
+
+# 编辑器本地配置
+/.vscode/
+/.idea/

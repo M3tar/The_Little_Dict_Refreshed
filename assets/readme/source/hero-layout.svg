@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="1200" height="440" viewBox="0 0 1200 440"
+     role="img" aria-labelledby="title desc">
+  <title id="title">The Little Dict Refreshed 0.1.0</title>
+  <desc id="desc">稳定查询单词、短语与三来源词频，右侧展示浅色与深色移动端实机界面。</desc>
+  <defs>
+    <clipPath id="light-shot"><rect x="678" y="34" width="466" height="372" rx="22"/></clipPath>
+    <clipPath id="dark-shot"><rect x="1024" y="238" width="120" height="168" rx="16"/></clipPath>
+  </defs>
+
+  <rect width="1200" height="440" rx="30" fill="#101214"/>
+  <path d="M0 352H620" stroke="#293036"/>
+  <circle cx="67" cy="56" r="7" fill="#72A9BC"/>
+  <text x="86" y="63" fill="#9CA3AA" font-size="18" font-weight="650"
+        font-family="ui-monospace, SFMono-Regular, Menlo, monospace">MOBILE DICTIONARY · v0.1.0</text>
+
+  <text x="64" y="146" fill="#F8F5EE" font-size="64" font-weight="760"
+        font-family="-apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, sans-serif">The Little Dict</text>
+  <text x="64" y="202" fill="#D98B3E" font-size="43" font-weight="700"
+        font-family="-apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, sans-serif">Refreshed</text>
+
+  <text x="64" y="264" fill="#E7E2D8" font-size="25" font-weight="540"
+        font-family="-apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, sans-serif">稳定查询单词、短语与三来源词频</text>
+  <text x="64" y="304" fill="#9CA3AA" font-size="20"
+        font-family="-apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, sans-serif">为欧路词典移动阅读重新整理信息层级</text>
+
+  <g transform="translate(64 375)">
+    <rect width="118" height="38" rx="19" fill="#18313B" stroke="#72A9BC"/>
+    <text x="59" y="25" text-anchor="middle" fill="#B9E1EE" font-size="17" font-weight="700"
+          font-family="ui-monospace, SFMono-Regular, Menlo, monospace">iWeb</text>
+    <rect x="130" width="118" height="38" rx="19" fill="#18313B" stroke="#72A9BC"/>
+    <text x="189" y="25" text-anchor="middle" fill="#B9E1EE" font-size="17" font-weight="700"
+          font-family="ui-monospace, SFMono-Regular, Menlo, monospace">COCA</text>
+    <rect x="260" width="128" height="38" rx="19" fill="#352A17" stroke="#D98B3E"/>
+    <text x="324" y="25" text-anchor="middle" fill="#F3C98E" font-size="17" font-weight="700"
+          font-family="ui-monospace, SFMono-Regular, Menlo, monospace">Spoken</text>
+  </g>
+
+  <rect x="664" y="22" width="492" height="396" rx="27" fill="#070809" stroke="#394147" stroke-width="2"/>
+  <image x="678" y="34" width="466" height="687" preserveAspectRatio="xMidYMin slice"
+         xlink:href="../screenshots/listen-light.png" clip-path="url(#light-shot)"/>
+  <rect x="678" y="34" width="466" height="372" rx="22" fill="none" stroke="#D8D3CA"/>
+
+  <image x="1024" y="238" width="120" height="188" preserveAspectRatio="xMidYMin slice"
+         xlink:href="../screenshots/go-on-dark.png" clip-path="url(#dark-shot)"/>
+  <rect x="1024" y="238" width="120" height="168" rx="16" fill="none" stroke="#5A6268" stroke-width="2"/>
+
+  <rect x="696" y="368" width="160" height="28" rx="14" fill="#101214" fill-opacity="0.92"/>
+  <text x="776" y="387" text-anchor="middle" fill="#F8F5EE" font-size="14" font-weight="700"
+        font-family="ui-monospace, SFMono-Regular, Menlo, monospace">REAL DEVICE UI</text>
+</svg>
