@@ -66,13 +66,16 @@ if (!t) {
 					var css = [
 						'.tld-host-heading{position:relative!important;display:flex!important;align-items:center!important;min-width:0!important;overflow:visible!important}',
 						'.tld-host-heading-label{min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}',
-						'.tld-display-settings-root{position:relative!important;display:inline-flex!important;flex:0 0 auto!important;align-items:center!important;margin-left:auto!important;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei UI","PingFang SC",sans-serif!important;line-height:1.4!important;z-index:1000!important}',
-						'.tld-display-settings-trigger{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;margin:-5px 4px -5px 8px!important;padding:0!important;border:0!important;border-radius:50%!important;-webkit-appearance:none!important;appearance:none!important;background:transparent!important;color:#607d8b!important;box-sizing:border-box!important;touch-action:manipulation!important}',
-						'.tld-display-settings-trigger svg{display:block!important;width:22px!important;height:22px!important;min-width:22px!important;min-height:22px!important;max-width:22px!important;max-height:22px!important;margin:0!important;padding:0!important;background:transparent!important;fill:none!important;stroke:currentColor!important;stroke-width:1.8!important;stroke-linecap:round!important;stroke-linejoin:round!important;pointer-events:none!important}',
+						'.tld-display-settings-root{position:relative!important;display:inline-flex!important;flex:0 0 auto!important;align-self:center!important;align-items:center!important;height:34px!important;margin-left:auto!important;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei UI","PingFang SC",sans-serif!important;line-height:1!important;vertical-align:middle!important;z-index:1000!important}',
+						'.tld-display-settings-trigger{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;margin:0 4px 0 8px!important;padding:0!important;border:0!important;border-radius:50%!important;-webkit-appearance:none!important;appearance:none!important;background:transparent!important;color:#607d8b!important;box-sizing:border-box!important;touch-action:manipulation!important}',
+						'.tld-display-settings-trigger svg{display:block!important;width:20px!important;height:20px!important;min-width:20px!important;min-height:20px!important;max-width:20px!important;max-height:20px!important;margin:0!important;padding:0!important;background:transparent!important;fill:none!important;stroke:currentColor!important;stroke-width:1.8!important;stroke-linecap:round!important;stroke-linejoin:round!important;pointer-events:none!important}',
 						'.tld-display-settings-root.is-open .tld-display-settings-trigger{background:rgba(79,113,133,.13)!important;color:#3f7084!important}',
-						'.tld-display-settings-popover{position:absolute!important;top:calc(100% + 9px)!important;right:0!important;display:block!important;width:264px!important;max-width:calc(100vw - 24px)!important;height:auto!important;min-height:0!important;margin:0!important;padding:0!important;box-sizing:border-box!important;overflow:visible!important;border:1px solid rgba(127,127,127,.34)!important;border-radius:12px!important;background:#fff!important;color:#2f2a26!important;box-shadow:0 10px 28px rgba(0,0,0,.18)!important;text-align:left!important;white-space:normal!important;z-index:1001!important}',
+						'.tld-display-settings-dismiss-layer{position:fixed!important;top:0!important;right:0!important;bottom:0!important;left:0!important;display:block!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important;z-index:2147482999!important}',
+						'.tld-display-settings-dismiss-layer[hidden]{display:none!important}',
+						'.tld-display-settings-popover{position:fixed!important;right:auto!important;display:block!important;width:264px!important;max-width:calc(100vw - 24px)!important;height:auto!important;min-height:0!important;margin:0!important;padding:0!important;box-sizing:border-box!important;overflow-x:hidden!important;overflow-y:auto!important;border:1px solid rgba(127,127,127,.34)!important;border-radius:12px!important;background:#fff!important;color:#2f2a26!important;box-shadow:0 10px 28px rgba(0,0,0,.18)!important;text-align:left!important;white-space:normal!important;z-index:2147483000!important}',
 						'.tld-display-settings-popover[hidden]{display:none!important}',
-						'.tld-display-settings-popover:before{content:""!important;position:absolute!important;top:-7px!important;right:13px!important;width:12px!important;height:12px!important;border-top:1px solid rgba(127,127,127,.34)!important;border-left:1px solid rgba(127,127,127,.34)!important;background:#fff!important;transform:rotate(45deg)!important}',
+						'.tld-display-settings-popover:before{content:""!important;position:absolute!important;top:-7px!important;left:var(--tld-popover-arrow-left,228px)!important;right:auto!important;width:12px!important;height:12px!important;border-top:1px solid rgba(127,127,127,.34)!important;border-left:1px solid rgba(127,127,127,.34)!important;background:#fff!important;transform:rotate(45deg)!important}',
+						'.tld-display-settings-popover.opens-upward:before{top:auto!important;bottom:-7px!important;border-top:0!important;border-left:0!important;border-right:1px solid rgba(127,127,127,.34)!important;border-bottom:1px solid rgba(127,127,127,.34)!important}',
 						'.tld-setting-row{position:relative!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:14px!important;width:calc(100% - 24px)!important;min-width:0!important;min-height:46px!important;height:auto!important;margin:0 12px!important;padding:0 4px!important;box-sizing:border-box!important;border:0!important;border-bottom:1px solid rgba(127,127,127,.18)!important;border-radius:0!important;-webkit-appearance:none!important;appearance:none!important;background:transparent!important;color:inherit!important;font:14px/1.35 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei UI","PingFang SC",sans-serif!important;text-align:left!important;touch-action:manipulation!important}',
 						'.tld-setting-label{display:block!important;min-width:0!important;overflow-wrap:anywhere!important}',
 						'.tld-setting-switch{position:relative!important;display:inline-block!important;flex:0 0 auto!important;width:40px!important;height:22px!important;min-width:40px!important;min-height:22px!important;margin:0!important;padding:0!important;border:0!important;border-radius:999px!important;background:#c9c5c1!important}',
@@ -824,10 +827,66 @@ if (!t) {
 
 				function closeDisplaySettings() {
 					var $root = $('.tld-display-settings-root').first();
-					if (!$root.length) return;
-					$root.removeClass('is-open');
-					$root.find('.tld-display-settings-trigger').attr('aria-expanded', 'false');
-					$root.find('.tld-display-settings-popover').prop('hidden', true).attr('aria-hidden', 'true');
+					$root.removeClass('is-open').find('.tld-display-settings-trigger').attr('aria-expanded', 'false');
+					$('#tld-display-settings-popover').prop('hidden', true).attr('aria-hidden', 'true').removeClass('opens-upward');
+					$('#tld-display-settings-dismiss-layer').prop('hidden', true).attr('aria-hidden', 'true');
+				}
+
+				function getDisplaySettingsPopover() {
+					return $('#tld-display-settings-popover').first();
+				}
+
+				function positionDisplaySettingsPopover() {
+					var $root = $('.tld-display-settings-root.is-open').first();
+					var $trigger = $root.find('.tld-display-settings-trigger').first();
+					var $popover = getDisplaySettingsPopover();
+					if (!$root.length || !$trigger.length || !$popover.length || $popover.prop('hidden')) return;
+
+					var trigger = $trigger[0];
+					if (!document.documentElement.contains(trigger)) {
+						closeDisplaySettings();
+						return;
+					}
+
+					var triggerRect = trigger.getBoundingClientRect();
+					var viewportWidth = document.documentElement.clientWidth || window.innerWidth;
+					var viewportHeight = document.documentElement.clientHeight || window.innerHeight;
+					if (triggerRect.bottom <= 0 || triggerRect.top >= viewportHeight || triggerRect.right <= 0 || triggerRect.left >= viewportWidth) {
+						closeDisplaySettings();
+						return;
+					}
+
+					var safe = 12;
+					var gap = 9;
+					var popoverStyle = $popover[0].style;
+					$popover.removeClass('opens-upward');
+					popoverStyle.setProperty('left', safe + 'px', 'important');
+					popoverStyle.setProperty('top', safe + 'px', 'important');
+					popoverStyle.setProperty('max-height', 'calc(100vh - 24px)', 'important');
+					popoverStyle.setProperty('visibility', 'hidden', 'important');
+					var popoverWidth = $popover.outerWidth();
+					var popoverHeight = $popover.outerHeight();
+					var left = triggerRect.right - popoverWidth;
+					left = Math.max(safe, Math.min(left, viewportWidth - safe - popoverWidth));
+
+					var top = triggerRect.bottom + gap;
+					var opensUpward = false;
+					if (top + popoverHeight > viewportHeight - safe && triggerRect.top - gap - popoverHeight >= safe) {
+						top = triggerRect.top - gap - popoverHeight;
+						opensUpward = true;
+					}
+					if (!opensUpward && top + popoverHeight > viewportHeight - safe) {
+						popoverStyle.setProperty('max-height', Math.max(120, viewportHeight - top - safe) + 'px', 'important');
+						popoverHeight = $popover.outerHeight();
+					}
+
+					var arrowLeft = triggerRect.left + triggerRect.width / 2 - left - 6;
+					arrowLeft = Math.max(12, Math.min(arrowLeft, popoverWidth - 24));
+					$popover.toggleClass('opens-upward', opensUpward);
+					popoverStyle.setProperty('left', Math.round(left) + 'px', 'important');
+					popoverStyle.setProperty('top', Math.round(Math.max(safe, top)) + 'px', 'important');
+					popoverStyle.setProperty('visibility', 'visible', 'important');
+					popoverStyle.setProperty('--tld-popover-arrow-left', Math.round(arrowLeft) + 'px');
 				}
 
 				function updateDisplaySettingsUi() {
@@ -842,7 +901,8 @@ if (!t) {
 					var signature = signatureParts.join('|');
 					if ($root.attr('data-settings-signature') === signature) return;
 
-					var $popover = $root.find('.tld-display-settings-popover').first();
+					var $popover = getDisplaySettingsPopover();
+					if (!$popover.length) return;
 					$popover.empty();
 					var availableCount = 0;
 
@@ -867,6 +927,7 @@ if (!t) {
 					var footerText = displayStorageAvailable ? '自动保存 · 后续查询生效' : '本次会话生效';
 					$popover.append($('<div class="tld-settings-footer"></div>').text(footerText));
 					$root.attr('data-settings-signature', signature);
+					if ($root.hasClass('is-open')) positionDisplaySettingsPopover();
 				}
 
 				function setDisplaySetting(key, enabled) {
@@ -897,12 +958,52 @@ if (!t) {
 				function bindDisplaySettingsOutsideClose() {
 					if (document.__tldDisplaySettingsOutsideBound) return;
 					var handleOutsideInteraction = function (event) {
-						if ($(event.target).closest('.tld-display-settings-root').length) return;
+						if ($(event.target).closest('.tld-display-settings-root, .tld-display-settings-popover, .tld-display-settings-dismiss-layer').length) return;
 						closeDisplaySettings();
 					};
 					document.addEventListener('click', handleOutsideInteraction, true);
 					document.addEventListener('touchstart', handleOutsideInteraction, true);
+					document.addEventListener('scroll', positionDisplaySettingsPopover, true);
+					window.addEventListener('resize', positionDisplaySettingsPopover, false);
 					document.__tldDisplaySettingsOutsideBound = true;
+				}
+
+				function ensureDisplaySettingsDismissLayer() {
+					var $layer = $('#tld-display-settings-dismiss-layer').first();
+					if (!$layer.length) {
+						$layer = $('<div id="tld-display-settings-dismiss-layer" class="tld-display-settings-dismiss-layer" hidden aria-hidden="true"></div>');
+						$(document.body).append($layer);
+					}
+					if (!$layer.attr('data-settings-events-bound')) {
+						$layer.on('touchstart click', function (event) {
+							event.preventDefault();
+							event.stopPropagation();
+							closeDisplaySettings();
+						});
+						$layer.attr('data-settings-events-bound', 'true');
+					}
+					return $layer;
+				}
+
+				function ensureDisplaySettingsPopover() {
+					ensureDisplaySettingsDismissLayer();
+					var $popover = getDisplaySettingsPopover();
+					if (!$popover.length) {
+						$popover = $('<div id="tld-display-settings-popover" class="tld-display-settings-popover" hidden aria-hidden="true"></div>');
+						$(document.body).append($popover);
+					}
+					if (!$popover.attr('data-settings-events-bound')) {
+						$popover.on('mousedown touchstart pointerdown click', function (event) {
+							event.stopPropagation();
+						});
+						$popover.on('click', '.tld-setting-row', function (event) {
+							event.preventDefault();
+							var key = $(this).attr('data-setting-key');
+							setDisplaySetting(key, !getDisplaySetting(key));
+						});
+						$popover.attr('data-settings-events-bound', 'true');
+					}
+					return $popover;
 				}
 
 				function mountDisplaySettings() {
@@ -914,14 +1015,15 @@ if (!t) {
 						$title.addClass('tld-host-heading');
 						$title.append('<span class="tld-host-heading-label">The Little Dict · Refreshed</span>');
 					}
+					var $popover = ensureDisplaySettingsPopover();
+					var $dismissLayer = $('#tld-display-settings-dismiss-layer').first();
 
 					var $root = $title.children('.tld-display-settings-root').first();
 					if (!$root.length) {
 						$root = $('<span class="tld-display-settings-root"></span>');
-						var $trigger = $('<button type="button" class="tld-display-settings-trigger" aria-label="显示设置" aria-expanded="false"></button>');
-						$trigger.append('<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3M12 19v3M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M2 12h3M19 12h3M4.93 19.07l2.12-2.12M16.95 7.05l2.12-2.12"></path></svg>');
-						var $popover = $('<span class="tld-display-settings-popover" hidden aria-hidden="true"></span>');
-						$root.append($trigger, $popover);
+						var $trigger = $('<button type="button" class="tld-display-settings-trigger" aria-label="显示设置" aria-haspopup="true" aria-controls="tld-display-settings-popover" aria-expanded="false"></button>');
+						$trigger.append('<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h8M16 7h4M4 12h3M11 12h9M4 17h10M18 17h2"></path><circle cx="14" cy="7" r="2"></circle><circle cx="9" cy="12" r="2"></circle><circle cx="16" cy="17" r="2"></circle></svg>');
+						$root.append($trigger);
 						$title.append($root);
 
 						$root.on('mousedown touchstart pointerdown', function (event) {
@@ -937,15 +1039,12 @@ if (!t) {
 								updateDisplaySettingsUi();
 								$root.addClass('is-open');
 								$(this).attr('aria-expanded', 'true');
+								$dismissLayer.prop('hidden', false).attr('aria-hidden', 'false');
 								$popover.prop('hidden', false).attr('aria-hidden', 'false');
+								positionDisplaySettingsPopover();
 							} else {
 								closeDisplaySettings();
 							}
-						});
-						$root.on('click', '.tld-setting-row', function (event) {
-							event.preventDefault();
-							var key = $(this).attr('data-setting-key');
-							setDisplaySetting(key, !getDisplaySetting(key));
 						});
 					}
 

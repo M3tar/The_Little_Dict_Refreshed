@@ -11,7 +11,7 @@ body {
     font-family: var(--tld-font-sans) !important;
 }
 
-/* Page-level display settings, mounted inside the dictionary host heading. */
+/* Page-level display settings trigger; the popover is portaled to body to escape host clipping. */
 .tld-display-settings-style-probe {
     position: fixed !important;
     left: -1234px !important;
@@ -36,10 +36,13 @@ body {
     position: relative;
     display: inline-flex;
     flex: 0 0 auto;
+    align-self: center;
     align-items: center;
+    height: 34px;
     margin-left: auto;
     font-family: var(--tld-font-sans);
-    line-height: 1.4;
+    line-height: 1;
+    vertical-align: middle;
     z-index: 1000;
 }
 
@@ -49,7 +52,7 @@ body {
     justify-content: center;
     width: 34px;
     height: 34px;
-    margin: -5px 4px -5px 8px;
+    margin: 0 4px 0 8px;
     padding: 0;
     border: 0;
     border-radius: 50%;
@@ -62,8 +65,9 @@ body {
 }
 
 .tld-display-settings-trigger svg {
-    width: 22px;
-    height: 22px;
+    display: block;
+    width: 20px;
+    height: 20px;
     fill: none;
     stroke: currentColor;
     stroke-width: 1.8;
@@ -88,15 +92,37 @@ body {
     outline-offset: 2px;
 }
 
-.tld-display-settings-popover {
-    position: absolute;
-    top: calc(100% + 9px);
+.tld-display-settings-dismiss-layer {
+    position: fixed;
+    top: 0;
     right: 0;
+    bottom: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    z-index: 2147482999;
+}
+
+.tld-display-settings-dismiss-layer[hidden] {
+    display: none !important;
+}
+
+.tld-display-settings-popover {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: auto;
     display: block;
     width: 264px;
     max-width: calc(100vw - 24px);
+    max-height: calc(100vh - 24px);
     box-sizing: border-box;
-    overflow: visible;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
     border: 1px solid rgba(127, 127, 127, 0.34);
     border-radius: 12px;
     background: #fff;
@@ -104,7 +130,7 @@ body {
     box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
     text-align: left;
     white-space: normal;
-    z-index: 1001;
+    z-index: 2147483000;
 }
 
 .tld-display-settings-popover[hidden] {
@@ -115,13 +141,23 @@ body {
     content: '';
     position: absolute;
     top: -7px;
-    right: 13px;
+    left: var(--tld-popover-arrow-left, 228px);
+    right: auto;
     width: 12px;
     height: 12px;
     border-top: 1px solid rgba(127, 127, 127, 0.34);
     border-left: 1px solid rgba(127, 127, 127, 0.34);
     background: #fff;
     transform: rotate(45deg);
+}
+
+.tld-display-settings-popover.opens-upward::before {
+    top: auto;
+    bottom: -7px;
+    border-top: 0;
+    border-left: 0;
+    border-right: 1px solid rgba(127, 127, 127, 0.34);
+    border-bottom: 1px solid rgba(127, 127, 127, 0.34);
 }
 
 .tld-setting-row {
