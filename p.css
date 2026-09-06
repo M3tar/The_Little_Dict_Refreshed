@@ -11,6 +11,275 @@ body {
     font-family: var(--tld-font-sans) !important;
 }
 
+/* Page-level display settings, mounted inside the dictionary host heading. */
+.tld-display-settings-style-probe {
+    position: fixed !important;
+    left: -1234px !important;
+}
+
+.tld-host-heading {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    min-width: 0;
+    overflow: visible !important;
+}
+
+.tld-host-heading-label {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.tld-display-settings-root {
+    position: relative;
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    margin-left: auto;
+    font-family: var(--tld-font-sans);
+    line-height: 1.4;
+    z-index: 1000;
+}
+
+.tld-display-settings-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    margin: -5px 4px -5px 8px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    appearance: none;
+    background: transparent;
+    color: #607d8b;
+    cursor: pointer;
+    touch-action: manipulation;
+    transition: background-color 0.18s ease, color 0.18s ease;
+}
+
+.tld-display-settings-trigger svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    pointer-events: none;
+}
+
+.tld-display-settings-trigger:hover,
+.tld-display-settings-root.is-open .tld-display-settings-trigger {
+    background: rgba(79, 113, 133, 0.13);
+    color: #3f7084;
+}
+
+.tld-display-settings-trigger:active {
+    background: rgba(79, 113, 133, 0.22);
+}
+
+.tld-display-settings-trigger:focus-visible,
+.tld-setting-row:focus-visible {
+    outline: 2px solid #4f8ca5;
+    outline-offset: 2px;
+}
+
+.tld-display-settings-popover {
+    position: absolute;
+    top: calc(100% + 9px);
+    right: 0;
+    display: block;
+    width: 264px;
+    max-width: calc(100vw - 24px);
+    box-sizing: border-box;
+    overflow: visible;
+    border: 1px solid rgba(127, 127, 127, 0.34);
+    border-radius: 12px;
+    background: #fff;
+    color: #2f2a26;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+    text-align: left;
+    white-space: normal;
+    z-index: 1001;
+}
+
+.tld-display-settings-popover[hidden] {
+    display: none !important;
+}
+
+.tld-display-settings-popover::before {
+    content: '';
+    position: absolute;
+    top: -7px;
+    right: 13px;
+    width: 12px;
+    height: 12px;
+    border-top: 1px solid rgba(127, 127, 127, 0.34);
+    border-left: 1px solid rgba(127, 127, 127, 0.34);
+    background: #fff;
+    transform: rotate(45deg);
+}
+
+.tld-setting-row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    width: calc(100% - 24px);
+    min-height: 46px;
+    margin: 0 12px;
+    padding: 0 4px;
+    box-sizing: border-box;
+    border: 0;
+    border-bottom: 1px solid rgba(127, 127, 127, 0.18);
+    appearance: none;
+    background: transparent;
+    color: inherit;
+    font: 14px/1.35 var(--tld-font-sans);
+    text-align: left;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+.tld-setting-row:hover {
+    background: rgba(79, 113, 133, 0.07);
+}
+
+.tld-setting-row:active {
+    background: rgba(79, 113, 133, 0.13);
+}
+
+.tld-setting-label {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.tld-setting-switch {
+    position: relative;
+    display: inline-block;
+    flex: 0 0 auto;
+    width: 40px;
+    height: 22px;
+    border-radius: 999px;
+    background: #c9c5c1;
+    transition: background-color 0.18s ease;
+}
+
+.tld-setting-switch-knob {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    transition: transform 0.18s ease;
+}
+
+.tld-setting-row[aria-checked='true'] .tld-setting-switch {
+    background: #5e9e7b;
+}
+
+.tld-setting-row[aria-checked='true'] .tld-setting-switch-knob {
+    transform: translateX(18px);
+}
+
+.tld-settings-empty {
+    padding: 18px 16px 14px;
+    color: #756c64;
+    font: 13px/1.45 var(--tld-font-sans);
+    text-align: center;
+}
+
+.tld-settings-footer {
+    margin: 0 12px;
+    padding: 10px 4px 11px;
+    border-top: 1px solid rgba(127, 127, 127, 0.22);
+    color: #817971;
+    font: 11px/1.35 var(--tld-font-sans);
+    text-align: left;
+}
+
+.frequency-source.frequency-source-hidden {
+    display: none !important;
+}
+
+body.tld-dark .tld-display-settings-trigger {
+    color: #9fc3d1;
+}
+
+body.tld-dark .tld-display-settings-trigger:hover,
+body.tld-dark .tld-display-settings-root.is-open .tld-display-settings-trigger {
+    background: rgba(143, 179, 195, 0.16);
+    color: #b7d6e2;
+}
+
+body.tld-dark .tld-display-settings-trigger:active {
+    background: rgba(143, 179, 195, 0.24);
+}
+
+body.tld-dark .tld-display-settings-popover {
+    border-color: #5b524b;
+    background: #2e2925;
+    color: #f0e9e1;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.42);
+}
+
+body.tld-dark .tld-display-settings-popover::before {
+    border-color: #5b524b;
+    background: #2e2925;
+}
+
+body.tld-dark .tld-setting-row {
+    border-bottom-color: rgba(191, 191, 191, 0.18);
+}
+
+body.tld-dark .tld-setting-row:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+body.tld-dark .tld-setting-row:active {
+    background: rgba(255, 255, 255, 0.11);
+}
+
+body.tld-dark .tld-setting-switch {
+    background: #5c554f;
+}
+
+body.tld-dark .tld-setting-row[aria-checked='true'] .tld-setting-switch {
+    background: #74a98a;
+}
+
+body.tld-dark .tld-setting-switch-knob {
+    background: #f6f1ed;
+}
+
+body.tld-dark .tld-settings-empty,
+body.tld-dark .tld-settings-footer {
+    color: #b2a79d;
+}
+
+body.tld-dark .tld-settings-footer {
+    border-top-color: rgba(191, 191, 191, 0.22);
+}
+
+@media (max-width: 340px) {
+    .tld-display-settings-trigger {
+        margin-left: 4px;
+        margin-right: 2px;
+    }
+
+    .tld-display-settings-popover {
+        width: 252px;
+    }
+}
+
 .dict-section-all {
     --tld-surface: rgba(255, 255, 255, 0.38);
     --tld-surface-subtle: rgba(255, 255, 255, 0.24);

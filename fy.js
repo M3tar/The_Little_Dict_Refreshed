@@ -32,33 +32,156 @@ if (!t) {
 		}
 		return _mobile;
 	}
-	jQuery(function () {
-		(function ($) {
-			$(".pf a").each(function () {
+		jQuery(function () {
+			(function ($) {
+				var DISPLAY_SETTINGS_STORAGE_KEY = 'tld-refreshed.display-settings.v1';
+				var DISPLAY_SETTING_DEFINITIONS = [
+					{ key: 'iweb', label: 'iWeb' },
+					{ key: 'coca', label: 'COCA' },
+					{ key: 'spoken', label: 'Spoken' },
+					{ key: 'phrase', label: 'Phrase Frequency' },
+					{ key: 'exam', label: '考试标签与星级' }
+				];
+				var displayStorageAvailable = true;
+				var displaySettingsStyleSource = 'external';
+
+				// 欧路可能分别缓存同名 JS/CSS。仅当新版设置样式未命中时注入组件级兼容样式，
+				// 避免 SVG、浮层和开关退化为宿主默认布局；外部 CSS 的构建号仍独立诊断。
+				function ensureDisplaySettingsStyles() {
+					var existingFallback = document.getElementById('tld-display-settings-fallback-styles');
+					if (existingFallback) {
+						displaySettingsStyleSource = 'fallback';
+						return;
+					}
+
+					var probe = document.createElement('span');
+					probe.className = 'tld-display-settings-style-probe';
+					probe.style.cssText = 'visibility:hidden;pointer-events:none;';
+					document.body.appendChild(probe);
+					var externalStylesReady = window.getComputedStyle && window.getComputedStyle(probe).left === '-1234px';
+					probe.parentNode.removeChild(probe);
+					if (externalStylesReady) return;
+
+					displaySettingsStyleSource = 'fallback';
+					var css = [
+						'.tld-host-heading{position:relative!important;display:flex!important;align-items:center!important;min-width:0!important;overflow:visible!important}',
+						'.tld-host-heading-label{min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}',
+						'.tld-display-settings-root{position:relative!important;display:inline-flex!important;flex:0 0 auto!important;align-items:center!important;margin-left:auto!important;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei UI","PingFang SC",sans-serif!important;line-height:1.4!important;z-index:1000!important}',
+						'.tld-display-settings-trigger{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;margin:-5px 4px -5px 8px!important;padding:0!important;border:0!important;border-radius:50%!important;-webkit-appearance:none!important;appearance:none!important;background:transparent!important;color:#607d8b!important;box-sizing:border-box!important;touch-action:manipulation!important}',
+						'.tld-display-settings-trigger svg{display:block!important;width:22px!important;height:22px!important;min-width:22px!important;min-height:22px!important;max-width:22px!important;max-height:22px!important;margin:0!important;padding:0!important;background:transparent!important;fill:none!important;stroke:currentColor!important;stroke-width:1.8!important;stroke-linecap:round!important;stroke-linejoin:round!important;pointer-events:none!important}',
+						'.tld-display-settings-root.is-open .tld-display-settings-trigger{background:rgba(79,113,133,.13)!important;color:#3f7084!important}',
+						'.tld-display-settings-popover{position:absolute!important;top:calc(100% + 9px)!important;right:0!important;display:block!important;width:264px!important;max-width:calc(100vw - 24px)!important;height:auto!important;min-height:0!important;margin:0!important;padding:0!important;box-sizing:border-box!important;overflow:visible!important;border:1px solid rgba(127,127,127,.34)!important;border-radius:12px!important;background:#fff!important;color:#2f2a26!important;box-shadow:0 10px 28px rgba(0,0,0,.18)!important;text-align:left!important;white-space:normal!important;z-index:1001!important}',
+						'.tld-display-settings-popover[hidden]{display:none!important}',
+						'.tld-display-settings-popover:before{content:""!important;position:absolute!important;top:-7px!important;right:13px!important;width:12px!important;height:12px!important;border-top:1px solid rgba(127,127,127,.34)!important;border-left:1px solid rgba(127,127,127,.34)!important;background:#fff!important;transform:rotate(45deg)!important}',
+						'.tld-setting-row{position:relative!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:14px!important;width:calc(100% - 24px)!important;min-width:0!important;min-height:46px!important;height:auto!important;margin:0 12px!important;padding:0 4px!important;box-sizing:border-box!important;border:0!important;border-bottom:1px solid rgba(127,127,127,.18)!important;border-radius:0!important;-webkit-appearance:none!important;appearance:none!important;background:transparent!important;color:inherit!important;font:14px/1.35 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei UI","PingFang SC",sans-serif!important;text-align:left!important;touch-action:manipulation!important}',
+						'.tld-setting-label{display:block!important;min-width:0!important;overflow-wrap:anywhere!important}',
+						'.tld-setting-switch{position:relative!important;display:inline-block!important;flex:0 0 auto!important;width:40px!important;height:22px!important;min-width:40px!important;min-height:22px!important;margin:0!important;padding:0!important;border:0!important;border-radius:999px!important;background:#c9c5c1!important}',
+						'.tld-setting-switch-knob{position:absolute!important;display:block!important;top:2px!important;left:2px!important;width:18px!important;height:18px!important;margin:0!important;padding:0!important;border-radius:50%!important;background:#fff!important;box-shadow:0 1px 3px rgba(0,0,0,.2)!important;transform:none!important}',
+						'.tld-setting-row[aria-checked="true"] .tld-setting-switch{background:#5e9e7b!important}',
+						'.tld-setting-row[aria-checked="true"] .tld-setting-switch-knob{transform:translateX(18px)!important}',
+						'.tld-settings-empty{display:block!important;padding:18px 16px 14px!important;color:#756c64!important;font:13px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei UI","PingFang SC",sans-serif!important;text-align:center!important}',
+						'.tld-settings-footer{display:block!important;margin:0 12px!important;padding:10px 4px 11px!important;border-top:1px solid rgba(127,127,127,.22)!important;color:#817971!important;font:11px/1.35 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei UI","PingFang SC",sans-serif!important;text-align:left!important}',
+						'.frequency-source.frequency-source-hidden{display:none!important}',
+						'body.tld-dark .tld-display-settings-trigger{color:#9fc3d1!important}',
+						'body.tld-dark .tld-display-settings-root.is-open .tld-display-settings-trigger{background:rgba(143,179,195,.16)!important;color:#b7d6e2!important}',
+						'body.tld-dark .tld-display-settings-popover{border-color:#5b524b!important;background:#2e2925!important;color:#f0e9e1!important;box-shadow:0 10px 28px rgba(0,0,0,.42)!important}',
+						'body.tld-dark .tld-display-settings-popover:before{border-color:#5b524b!important;background:#2e2925!important}',
+						'body.tld-dark .tld-setting-row{border-bottom-color:rgba(191,191,191,.18)!important}',
+						'body.tld-dark .tld-setting-switch{background:#5c554f!important}',
+						'body.tld-dark .tld-setting-row[aria-checked="true"] .tld-setting-switch{background:#74a98a!important}',
+						'body.tld-dark .tld-setting-switch-knob{background:#f6f1ed!important}',
+						'body.tld-dark .tld-settings-empty,body.tld-dark .tld-settings-footer{color:#b2a79d!important}',
+						'@media(max-width:340px){.tld-display-settings-trigger{margin-left:4px!important;margin-right:2px!important}.tld-display-settings-popover{width:252px!important}}'
+					].join('');
+					var style = document.createElement('style');
+					style.id = 'tld-display-settings-fallback-styles';
+					style.type = 'text/css';
+					style.appendChild(document.createTextNode(css));
+					(document.head || document.documentElement).appendChild(style);
+				}
+
+				function configFlag(value) {
+					return value === true || value === 1 || value === '1';
+				}
+
+				var displayDefaults = {
+					iweb: configFlag(window.iweb),
+					coca: configFlag(window.coca),
+					spoken: configFlag(window.spoken),
+					phrase: configFlag(window.EPFD),
+					exam: configFlag(window.exam)
+				};
+
+				function loadDisplaySettings() {
+					var values = $.extend({}, displayDefaults);
+					var raw = '';
+					try {
+						if (!window.localStorage) throw new Error('localStorage unavailable');
+						raw = window.localStorage.getItem(DISPLAY_SETTINGS_STORAGE_KEY);
+					} catch (error) {
+						displayStorageAvailable = false;
+						return values;
+					}
+					if (!raw) return values;
+					try {
+						var parsed = JSON.parse(raw);
+						if (!parsed || parsed.version !== 1 || !parsed.values) return values;
+						for (var i = 0; i < DISPLAY_SETTING_DEFINITIONS.length; i++) {
+							var key = DISPLAY_SETTING_DEFINITIONS[i].key;
+							if (typeof parsed.values[key] === 'boolean') values[key] = parsed.values[key];
+						}
+					} catch (error) {
+						return values;
+					}
+					return values;
+				}
+
+				var displaySettings = loadDisplaySettings();
+
+				function getDisplaySetting(key) {
+					return Boolean(displaySettings[key]);
+				}
+
+				function persistDisplaySettings() {
+					try {
+						if (!window.localStorage) throw new Error('localStorage unavailable');
+						window.localStorage.setItem(DISPLAY_SETTINGS_STORAGE_KEY, JSON.stringify({
+							version: 1,
+							values: displaySettings
+						}));
+						displayStorageAvailable = true;
+						return true;
+					} catch (error) {
+						displayStorageAvailable = false;
+						return false;
+					}
+				}
+				ensureDisplaySettingsStyles();
+				$(".pf a").each(function () {
 				if ($(this).css("display") == "inline-block") {
 					$(this).find("img").css("cssText", "display:block;!important")
 				}
 			})
 
-			if (!window.coca) {
-				$("div.coca:not('.iweb')").hide();
+				if (!getDisplaySetting('coca')) {
+					$("div.coca:not('.iweb')").hide();
 			} else {
 				$("div.coca:not('.iweb')").show();
 			}
-			if (!window.iweb) {
-				$("div.iweb").hide();
-			}
-			if (!window.spoken) {
-				$(".srank").hide();
-			}
-			if (!window.exam) {
-				$(".word-frequency").hide();
+				if (!getDisplaySetting('iweb')) {
+					$("div.iweb").hide();
+				}
+				if (!getDisplaySetting('spoken')) {
+					$(".srank").hide();
+				}
+				if (!getDisplaySetting('exam')) {
+					$(".word-frequency").hide();
 			}
 			if (!window.ex_ratio) {
 				$(".coca2").hide();
 			}
-			if (!window.EPFD) {
-				$(".epfd").hide();
+				if (!getDisplaySetting('phrase')) {
+					$(".epfd").hide();
 			}
 			if (!window.definition) {
 				$(".gdc").hide();
@@ -381,9 +504,11 @@ if (!t) {
 						$rankSource.remove();
 					}
 
-					var isEnabled = Boolean(window.EPFD);
-					$section.toggleClass('phrase-frequency-hidden', !isEnabled);
-					$contentEpfd.toggle(isEnabled);
+						$section.attr('data-setting-available', 'true');
+						var isEnabled = getDisplaySetting('phrase');
+						$section.toggleClass('phrase-frequency-hidden', !isEnabled);
+						$section.attr('aria-hidden', isEnabled ? 'false' : 'true');
+						$contentEpfd.toggle(isEnabled);
 					bindCollapsibleSection($section, '.phrase-frequency-header', '.phrase-frequency-body');
 				});
 			}
@@ -424,7 +549,7 @@ if (!t) {
 				return Number(normalized);
 			}
 
-			function rebuildFrequencyRows($source, isSpoken) {
+				function rebuildFrequencyRows($source, isSpoken) {
 				var $positions = isSpoken ? $() : $source.children('.pos');
 				var $ranks = $source.children('.rank');
 				var $totals = $source.children('.total');
@@ -468,10 +593,33 @@ if (!t) {
 
 				$source.attr('data-frequency-normalized', 'true');
 				$source.children('.table').hide().attr('aria-hidden', 'true');
-				return rows.length;
-			}
+					return rows.length;
+				}
 
-			function renderStableWordFrequency(root) {
+				function applyWordFrequencyVisibility($entry) {
+					var $section = $entry.children('.dict-section-main').find('.coca-srank-section[data-stable-frequency="true"]').first();
+					if (!$section.length) return;
+					var availableSources = [];
+					var visibleSources = [];
+
+					$section.find('.frequency-source[data-source-key]').each(function () {
+						var $source = $(this);
+						var sourceKey = $source.attr('data-source-key');
+						var enabled = getDisplaySetting(sourceKey);
+						availableSources.push(sourceKey);
+						$source.toggleClass('frequency-source-hidden', !enabled);
+						$source.attr('aria-hidden', enabled ? 'false' : 'true');
+						if (enabled) visibleSources.push(sourceKey);
+					});
+
+					var cardVisible = visibleSources.length > 0 && window.freq_expand != 2;
+					$section.toggleClass('freq-hidden', !cardVisible);
+					$section.attr('aria-hidden', cardVisible ? 'false' : 'true');
+					$section.attr('data-available-sources', availableSources.join('-'));
+					$section.attr('data-frequency-sources', visibleSources.join('-'));
+				}
+
+				function renderStableWordFrequency(root) {
 				var $entries = findInScope(root, '.dict-section-all');
 				if (root && root !== document) $entries = $entries.add($(root).closest('.dict-section-all'));
 
@@ -484,10 +632,13 @@ if (!t) {
 					var hasUnwrappedSource = $main.find('.coca, .srank').filter(function () {
 						return !$(this).closest('.coca-srank-section[data-stable-frequency="true"]').length;
 					}).length > 0;
-					if ($entry.attr('data-stable-frequency-ready') === 'true' &&
-						$oldSections.length === 1 &&
-						$oldSections.first().attr('data-stable-frequency') === 'true' &&
-						!hasUnwrappedSource) return;
+						if ($entry.attr('data-stable-frequency-ready') === 'true' &&
+							$oldSections.length === 1 &&
+							$oldSections.first().attr('data-stable-frequency') === 'true' &&
+							!hasUnwrappedSource) {
+							applyWordFrequencyVisibility($entry);
+							return;
+						}
 					var $rawSources = $main.find('.coca, .srank').filter(function () {
 						return $(this).closest('.dict-section-all')[0] === $entry[0];
 					});
@@ -513,8 +664,7 @@ if (!t) {
 					section.appendChild(body);
 					var $section = $(section);
 					var $body = $(body);
-					var visibleSources = [];
-					var sourceOrder = ['iweb', 'coca', 'spoken'];
+						var sourceOrder = ['iweb', 'coca', 'spoken'];
 
 					for (var sourceIndex = 0; sourceIndex < sourceOrder.length; sourceIndex++) {
 						var sourceKey = sourceOrder[sourceIndex];
@@ -523,8 +673,8 @@ if (!t) {
 							if (sourceKey === 'iweb') return $(this).hasClass('coca') && $(this).hasClass('iweb');
 							return $(this).hasClass('coca') && !$(this).hasClass('iweb');
 						});
-						var enabled = sourceKey === 'iweb' ? Boolean(window.iweb) : (sourceKey === 'coca' ? Boolean(window.coca) : Boolean(window.spoken));
-						var $sourceGroup = $('<div class="frequency-source frequency-source-' + sourceKey + '"></div>');
+							var $sourceGroup = $('<div class="frequency-source frequency-source-' + sourceKey + '"></div>');
+							$sourceGroup.attr('data-source-key', sourceKey);
 						var sourceTitle = sourceKey === 'iweb' ? 'iWeb' : (sourceKey === 'coca' ? 'COCA' : 'Spoken');
 						$sourceGroup.append($('<span class="frequency-source-title"></span>').text(sourceTitle));
 						var validRowCount = 0;
@@ -533,20 +683,17 @@ if (!t) {
 							validRowCount += rebuildFrequencyRows($source, sourceKey === 'spoken');
 							$sourceGroup.append($source);
 						});
-						if (enabled && validRowCount > 0) {
-							$body.append($sourceGroup);
-							visibleSources.push(sourceKey);
+							if (validRowCount > 0) {
+								$sourceGroup.attr('data-source-available', 'true');
+								$body.append($sourceGroup);
+							}
 						}
-					}
 
-					if (!visibleSources.length || window.freq_expand == 2) {
-						$section.addClass('freq-hidden');
-					}
-					$section.attr('data-frequency-sources', visibleSources.join('-'));
-					$main.prepend($section);
-					bindCollapsibleSection($section, '.coca-srank-header', '.coca-srank-body');
-					$entry.attr('data-stable-frequency-ready', 'true');
-				});
+						$main.prepend($section);
+						bindCollapsibleSection($section, '.coca-srank-header', '.coca-srank-body');
+						$entry.attr('data-stable-frequency-ready', 'true');
+						applyWordFrequencyVisibility($entry);
+					});
 			}
 
 			renderStableWordFrequency();
@@ -624,10 +771,196 @@ if (!t) {
 							break;
 					}
 				}
-			}
-			localizeExamLabels();
+				}
+				localizeExamLabels();
 
-			// 根据系统主题自动切换深色模式（欧路通过 body 的 black/night 类，非欧路通过 prefers-color-scheme）
+				function applyPhraseFrequencyVisibility(root) {
+					var enabled = getDisplaySetting('phrase');
+					findInScope(root, '.phrase-frequency-section[data-setting-available="true"]').each(function () {
+						var $section = $(this);
+						$section.toggleClass('phrase-frequency-hidden', !enabled);
+						$section.attr('aria-hidden', enabled ? 'false' : 'true');
+						$section.find('.epfd').toggle(enabled);
+					});
+				}
+
+				function applyExamVisibility(root) {
+					var enabled = getDisplaySetting('exam');
+					findInScope(root, '.word-frequency').each(function () {
+						var $labels = $(this);
+						$labels.toggle(enabled);
+						$labels.attr('aria-hidden', enabled ? 'false' : 'true');
+					});
+				}
+
+				function applyDisplaySettings(root) {
+					var $entries = findInScope(root, '.dict-section-all');
+					if (root && root !== document) $entries = $entries.add($(root).closest('.dict-section-all'));
+					$entries.each(function () {
+						applyWordFrequencyVisibility($(this));
+					});
+					applyPhraseFrequencyVisibility(root);
+					applyExamVisibility(root);
+					updateDisplaySettingsUi();
+				}
+
+				function getDisplayAvailability() {
+					function hasMeaningfulExamContent() {
+						return $('.word-frequency').filter(function () {
+							var $node = $(this);
+							var text = $node.text().replace(/[\s\u00A0\u200B-\u200D\uFEFF]+/g, '');
+							return Boolean(text || $node.find('img, canvas, svg').length);
+						}).length > 0;
+					}
+
+					return {
+						iweb: $('.frequency-source[data-source-key="iweb"][data-source-available="true"]').length > 0,
+						coca: $('.frequency-source[data-source-key="coca"][data-source-available="true"]').length > 0,
+						spoken: $('.frequency-source[data-source-key="spoken"][data-source-available="true"]').length > 0,
+						phrase: $('.phrase-frequency-section[data-setting-available="true"]').length > 0,
+						exam: hasMeaningfulExamContent()
+					};
+				}
+
+				function closeDisplaySettings() {
+					var $root = $('.tld-display-settings-root').first();
+					if (!$root.length) return;
+					$root.removeClass('is-open');
+					$root.find('.tld-display-settings-trigger').attr('aria-expanded', 'false');
+					$root.find('.tld-display-settings-popover').prop('hidden', true).attr('aria-hidden', 'true');
+				}
+
+				function updateDisplaySettingsUi() {
+					var $root = $('.tld-display-settings-root').first();
+					if (!$root.length) return;
+					var availability = getDisplayAvailability();
+					var signatureParts = [displayStorageAvailable ? 'stored' : 'session'];
+					for (var i = 0; i < DISPLAY_SETTING_DEFINITIONS.length; i++) {
+						var definition = DISPLAY_SETTING_DEFINITIONS[i];
+						signatureParts.push(definition.key + ':' + (availability[definition.key] ? '1' : '0') + ':' + (getDisplaySetting(definition.key) ? '1' : '0'));
+					}
+					var signature = signatureParts.join('|');
+					if ($root.attr('data-settings-signature') === signature) return;
+
+					var $popover = $root.find('.tld-display-settings-popover').first();
+					$popover.empty();
+					var availableCount = 0;
+
+					for (var settingIndex = 0; settingIndex < DISPLAY_SETTING_DEFINITIONS.length; settingIndex++) {
+						var item = DISPLAY_SETTING_DEFINITIONS[settingIndex];
+						if (!availability[item.key]) continue;
+						availableCount += 1;
+						var enabled = getDisplaySetting(item.key);
+						var $row = $('<button type="button" class="tld-setting-row" role="switch"></button>');
+						$row.attr('data-setting-key', item.key);
+						$row.attr('aria-checked', enabled ? 'true' : 'false');
+						$row.attr('aria-label', item.label + (enabled ? '，已显示' : '，已隐藏'));
+						$row.append($('<span class="tld-setting-label"></span>').text(item.label));
+						$row.append('<span class="tld-setting-switch" aria-hidden="true"><span class="tld-setting-switch-knob"></span></span>');
+						$popover.append($row);
+					}
+
+					if (!availableCount) {
+						$popover.append('<div class="tld-settings-empty">当前词条暂无可配置内容</div>');
+					}
+
+					var footerText = displayStorageAvailable ? '自动保存 · 后续查询生效' : '本次会话生效';
+					$popover.append($('<div class="tld-settings-footer"></div>').text(footerText));
+					$root.attr('data-settings-signature', signature);
+				}
+
+				function setDisplaySetting(key, enabled) {
+					var known = false;
+					for (var i = 0; i < DISPLAY_SETTING_DEFINITIONS.length; i++) {
+						if (DISPLAY_SETTING_DEFINITIONS[i].key === key) {
+							known = true;
+							break;
+						}
+					}
+					if (!known) return false;
+					displaySettings[key] = Boolean(enabled);
+					persistDisplaySettings();
+					applyDisplaySettings(document);
+					return true;
+				}
+
+				function findHostTitleElement() {
+					var $mounted = $('.tld-host-heading').first();
+					if ($mounted.length) return $mounted;
+					return $('body *').filter(function () {
+						if ($(this).children().length) return false;
+						var text = $.trim($(this).text());
+						return text === 'The Little Dict' || text === 'The Little Dict · Refreshed';
+					}).first();
+				}
+
+				function bindDisplaySettingsOutsideClose() {
+					if (document.__tldDisplaySettingsOutsideBound) return;
+					var handleOutsideInteraction = function (event) {
+						if ($(event.target).closest('.tld-display-settings-root').length) return;
+						closeDisplaySettings();
+					};
+					document.addEventListener('click', handleOutsideInteraction, true);
+					document.addEventListener('touchstart', handleOutsideInteraction, true);
+					document.__tldDisplaySettingsOutsideBound = true;
+				}
+
+				function mountDisplaySettings() {
+					var $title = findHostTitleElement();
+					if (!$title.length) return false;
+
+					if (!$title.hasClass('tld-host-heading')) {
+						$title.empty();
+						$title.addClass('tld-host-heading');
+						$title.append('<span class="tld-host-heading-label">The Little Dict · Refreshed</span>');
+					}
+
+					var $root = $title.children('.tld-display-settings-root').first();
+					if (!$root.length) {
+						$root = $('<span class="tld-display-settings-root"></span>');
+						var $trigger = $('<button type="button" class="tld-display-settings-trigger" aria-label="显示设置" aria-expanded="false"></button>');
+						$trigger.append('<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3M12 19v3M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M2 12h3M19 12h3M4.93 19.07l2.12-2.12M16.95 7.05l2.12-2.12"></path></svg>');
+						var $popover = $('<span class="tld-display-settings-popover" hidden aria-hidden="true"></span>');
+						$root.append($trigger, $popover);
+						$title.append($root);
+
+						$root.on('mousedown touchstart pointerdown', function (event) {
+							event.stopPropagation();
+						});
+						$root.on('click', function (event) {
+							event.stopPropagation();
+						});
+						$root.on('click', '.tld-display-settings-trigger', function (event) {
+							event.preventDefault();
+							var shouldOpen = !$root.hasClass('is-open');
+							if (shouldOpen) {
+								updateDisplaySettingsUi();
+								$root.addClass('is-open');
+								$(this).attr('aria-expanded', 'true');
+								$popover.prop('hidden', false).attr('aria-hidden', 'false');
+							} else {
+								closeDisplaySettings();
+							}
+						});
+						$root.on('click', '.tld-setting-row', function (event) {
+							event.preventDefault();
+							var key = $(this).attr('data-setting-key');
+							setDisplaySetting(key, !getDisplaySetting(key));
+						});
+					}
+
+					bindDisplaySettingsOutsideClose();
+					$(document).off('keydown.tldDisplaySettings').on('keydown.tldDisplaySettings', function (event) {
+						if (event.which === 27) closeDisplaySettings();
+					});
+					updateDisplaySettingsUi();
+					return true;
+				}
+
+				applyDisplaySettings(document);
+				mountDisplaySettings();
+
+				// 根据系统主题自动切换深色模式（欧路通过 body 的 black/night 类，非欧路通过 prefers-color-scheme）
 			function applyTheme(theme) {
 				var mode = window.dark_mode;
 				if (mode == 1) theme = 'light';
@@ -701,9 +1034,19 @@ if (!t) {
 			window.renderCoca2Pills = renderCoca2Pills;
 			window.applyCurrentDarkTheme = applyTheme;
 			window.renderStableWordFrequency = renderStableWordFrequency;
-			window.wrapPhraseFrequencySections = wrapPhraseFrequencySections;
-			window.renderEntrySeparators = renderEntrySeparators;
-			window.localizeExamLabels = localizeExamLabels;
+				window.wrapPhraseFrequencySections = wrapPhraseFrequencySections;
+				window.renderEntrySeparators = renderEntrySeparators;
+				window.localizeExamLabels = localizeExamLabels;
+				window.mountTldDisplaySettings = mountDisplaySettings;
+				window.tldDisplaySettings = {
+					storageKey: DISPLAY_SETTINGS_STORAGE_KEY,
+					get: getDisplaySetting,
+					set: setDisplaySetting,
+					apply: function () { applyDisplaySettings(document); },
+					availability: getDisplayAvailability,
+					isStorageAvailable: function () { return displayStorageAvailable; },
+					styleSource: function () { return displaySettingsStyleSource; }
+				};
 
 			// 监听 DOM 变化，兼容内容被词典软件延迟注入或重新渲染的情况
 			if (typeof MutationObserver !== 'undefined') {
@@ -728,23 +1071,32 @@ if (!t) {
 						wrapDictSections(root);
 						adoptLateEntryNodes(root);
 						renderEntrySeparators();
-						wrapPhraseFrequencySections(root);
-						renderStableWordFrequency(root);
-						renderCoca2Pills(root);
-						localizeExamLabels(root);
-					}
+							wrapPhraseFrequencySections(root);
+							renderStableWordFrequency(root);
+							renderCoca2Pills(root);
+							localizeExamLabels(root);
+						}
 
-					applyTheme($(document.body).hasClass('tld-dark') ? 'dark' : 'light');
+						applyDisplaySettings(document);
+						mountDisplaySettings();
+						applyTheme($(document.body).hasClass('tld-dark') ? 'dark' : 'light');
 				}
 
 				var dictObserver = new MutationObserver(function (mutations) {
+					var queryContentChanged = false;
+					var queryContentSelector = '.hwrap, .pf, .word-frequency, .epfd, .coca, .srank, .coca2, .gdc';
 					for (var mutationIndex = 0; mutationIndex < mutations.length; mutationIndex++) {
 						var addedNodes = mutations[mutationIndex].addedNodes;
 						for (var nodeIndex = 0; nodeIndex < addedNodes.length; nodeIndex++) {
 							var node = addedNodes[nodeIndex];
+							if (node.nodeType === 1 && !$(node).closest('.tld-display-settings-root').length &&
+								($(node).is(queryContentSelector) || $(node).find(queryContentSelector).length)) {
+								queryContentChanged = true;
+							}
 							queueRoot(node.nodeType === 1 ? node : node.parentNode);
 						}
 					}
+					if (queryContentChanged) closeDisplaySettings();
 					if (pendingRoots.length && !updateScheduled) {
 						updateScheduled = true;
 						scheduleFrame(flushAddedContent);
@@ -763,12 +1115,10 @@ if (!t) {
 }
 t = 1;
 
-// 正式版只更新词典标题；测试构建标记不进入发布代码。
+// 正式版标题和设置入口由同一幂等挂载逻辑维护；测试构建标记不进入发布代码。
 (function ($) {
 	if (!$ || typeof document === 'undefined') return;
 	$(function () {
-		$('body *').filter(function () {
-			return !$(this).children().length && $.trim($(this).text()) === 'The Little Dict';
-		}).first().text('The Little Dict · Refreshed');
+		if (window.mountTldDisplaySettings) window.mountTldDisplaySettings();
 	});
 })(typeof jQuery !== 'undefined' ? jQuery : null);
