@@ -8,13 +8,12 @@
 
 ## 2. 当前基线与路线图
 
-- 当前稳定基线：`v0.1.0`，Git 标签 `v0.1.0`。
-- 当前稳定能力：可靠查询单词、短语、词频及相邻同形词。
-- Android 核心查询界面已经实机验收。
-- iOS 仅完成代码兼容，尚未实机验收；不得写成“已完成 iOS 实测”。
-- 当前第二阶段：五项页面显示设置与偏好持久化，详细规范见 `docs/TLD_Refreshed_第二阶段_页面显示设置开发规范.md`。
-- 本轮不实现简洁查询模式、页面内恢复默认入口或其他显示开关；不得自行扩大范围。
-- 下一阶段只能控制 `v0.1.0` 已稳定模块的显隐，不重新设计词频数据结构。
+- 当前稳定版本：`v0.2.0`，Git 标签 `v0.2.0`；完整词典包通过同版本 GitHub Release 分发。
+- 上一稳定版本：`v0.1.0`，Git 标签 `v0.1.0`。
+- 当前稳定能力：可靠查询单词、短语、词频及相邻同形词，以及五项页面显示设置与偏好持久化。
+- v0.2.0 完整包已在 Android 与 iOS 实机稳定运行；Android 已完成浅色、深色和设置交互截图核对。
+- 第二阶段已经完成，详细规范与验收边界见 `docs/TLD_Refreshed_第二阶段_页面显示设置开发规范.md`。
+- 下一阶段尚未定义；不得自行加入简洁查询模式、页面内恢复默认入口或其他显示开关。
 
 ## 3. 文件职责
 
@@ -157,7 +156,7 @@ node --check tests/run-overlay-regression.js
 4. 执行 `node tests/run-mixed-cache-regression.js`，确认新版 JS 与旧 CSS 混用时设置入口仍保持可用；
 5. 执行 `node tests/run-overlay-regression.js`，确认宿主折叠或裁切时浮层仍完整可点，并验证滚动关闭与上下翻转；
 6. 人工查看代表性的 320px、390px 与 720px 截图；
-7. 对真实 MDX 制作 Android 测试包并完成目标词条实机验收。
+7. 对真实 MDX 制作测试包并完成目标移动端的目标词条实机验收。
 
 重点回归：
 
@@ -170,11 +169,11 @@ node --check tests/run-overlay-regression.js
 - 卡片内无词性占比条，卡片下方释义占比胶囊仍存在；
 - 正式版无测试构建标记。
 
-浏览器 fixture 只是快速回归，不能替代欧路 Android + 真实 `TLD.mdx` 的最终验收。
+浏览器 fixture 只是快速回归，不能替代欧路 Android/iOS + 真实 `TLD.mdx` 的最终验收。
 
 ## 10. 打包与发布
 
-- Android 包根目录必须只包含 `TLD.mdx`、`TLD.png`、`config.ini`、`fy.js` 和 `p.css`。
+- 完整发布包根目录必须只包含 `TLD.mdx`、`TLD.png`、`config.ini`、`fy.js` 和 `p.css`。
 - 打包前确认包内文件与本轮已验收源文件一致，并记录 ZIP 的 SHA-256。
 - 测试包放入 `releases/bNN/`；正式版本放入对应的 `releases/vX.Y.Z/`。
 - `TLD.mdx`、`releases/`、`tests/`、`docs/` 和 `pic/` 保持不进入普通 Git 提交。

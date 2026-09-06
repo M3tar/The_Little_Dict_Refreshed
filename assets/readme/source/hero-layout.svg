@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
      width="1200" height="440" viewBox="0 0 1200 440"
      role="img" aria-labelledby="title desc">
-  <title id="title">The Little Dict Refreshed 0.1.0</title>
-  <desc id="desc">稳定查询单词、短语与三来源词频，右侧展示浅色与深色移动端实机界面。</desc>
+  <title id="title">The Little Dict Refreshed 0.2.0</title>
+  <desc id="desc">稳定查询与可配置词频显示，右侧展示浅色与深色移动端实机界面。</desc>
   <defs>
     <clipPath id="light-shot"><rect x="678" y="34" width="466" height="372" rx="22"/></clipPath>
     <clipPath id="dark-shot"><rect x="1024" y="238" width="120" height="168" rx="16"/></clipPath>
@@ -12,7 +12,7 @@
   <path d="M0 352H620" stroke="#293036"/>
   <circle cx="67" cy="56" r="7" fill="#72A9BC"/>
   <text x="86" y="63" fill="#9CA3AA" font-size="18" font-weight="650"
-        font-family="ui-monospace, SFMono-Regular, Menlo, monospace">MOBILE DICTIONARY · v0.1.0</text>
+        font-family="ui-monospace, SFMono-Regular, Menlo, monospace">MOBILE DICTIONARY · v0.2.0</text>
 
   <text x="64" y="146" fill="#F8F5EE" font-size="64" font-weight="760"
         font-family="-apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, sans-serif">The Little Dict</text>
@@ -20,7 +20,7 @@
         font-family="-apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, sans-serif">Refreshed</text>
 
   <text x="64" y="264" fill="#E7E2D8" font-size="25" font-weight="540"
-        font-family="-apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, sans-serif">稳定查询单词、短语与三来源词频</text>
+        font-family="-apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, sans-serif">稳定查询与可配置词频显示</text>
   <text x="64" y="304" fill="#9CA3AA" font-size="20"
         font-family="-apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, sans-serif">为欧路词典移动阅读重新整理信息层级</text>
 
@@ -37,8 +37,8 @@
   </g>
 
   <rect x="664" y="22" width="492" height="396" rx="27" fill="#070809" stroke="#394147" stroke-width="2"/>
-  <image x="678" y="34" width="466" height="687" preserveAspectRatio="xMidYMin slice"
-         xlink:href="../screenshots/listen-light.png" clip-path="url(#light-shot)"/>
+  <image x="678" y="34" width="466" height="493" preserveAspectRatio="xMidYMin slice"
+         xlink:href="../screenshots/settings-light.png" clip-path="url(#light-shot)"/>
   <rect x="678" y="34" width="466" height="372" rx="22" fill="none" stroke="#D8D3CA"/>
 
   <image x="1024" y="238" width="120" height="188" preserveAspectRatio="xMidYMin slice"

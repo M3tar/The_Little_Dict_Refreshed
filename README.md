@@ -1,17 +1,26 @@
 <p align="center">
-  <img src="./assets/readme/hero.png" width="100%" alt="The Little Dict Refreshed 0.1.0：稳定查询单词、短语与三来源词频">
+  <img src="./assets/readme/hero.png" width="100%" alt="The Little Dict Refreshed 0.2.0：稳定查询与可配置词频显示">
 </p>
 
 <p align="center">
-  <strong>v0.1.0 · 稳定查询版</strong><br>
-  面向欧路词典移动端的稳定查询显示层
+  <strong>v0.2.0 · 可配置查询版</strong><br>
+  面向欧路词典移动端的稳定查询与显示控制
 </p>
 
-The Little Dict · Refreshed 在不修改词典正文与原始词频数据的前提下，重新整理单词、短语、词频来源与中文释义，让查询结果在手机、深色模式和动态加载场景中保持清晰、稳定。
+The Little Dict · Refreshed 在不修改词典正文与原始词频数据的前提下，重新整理单词、短语、词频来源与中文释义，并允许按需显示 iWeb、COCA、Spoken、Phrase Frequency、考试标签与星级。设置自动保存，让后续查询在手机、深色模式和动态加载场景中保持清晰、稳定。
 
 ## 实机效果
 
-以下截图来自 Android 实机，仅裁去状态栏、宿主工具栏和其他词典内容，没有重新生成或重绘界面文字。
+以下截图来自 Android 实机，仅裁去状态栏、宿主工具栏和其他词典内容，没有重新生成或重绘界面文字。v0.2.0 完整包也已在 iOS 实机稳定运行。
+
+### 页面显示设置
+
+<p align="center">
+  <a href="./assets/readme/screenshots/settings-light.png"><img src="./assets/readme/screenshots/settings-light.png" width="48%" align="top" alt="浅色模式下的页面显示设置浮层"></a>
+  <a href="./assets/readme/screenshots/settings-dark.png"><img src="./assets/readme/screenshots/settings-dark.png" width="48%" align="top" alt="深色模式下的页面显示设置浮层"></a>
+</p>
+
+<p align="center"><sub>左：浅色模式　·　右：深色模式（点击图片查看原尺寸）</sub></p>
 
 ### 单词查询
 
@@ -31,20 +40,22 @@ The Little Dict · Refreshed 在不修改词典正文与原始词频数据的前
 
 <p align="center"><sub>左：浅色模式　·　右：深色模式（点击图片查看原尺寸）</sub></p>
 
-## 0.1.0 包含什么
+## v0.2.0 包含什么
 
 - 单词词频统一为 `iWeb → COCA → Spoken` 三来源卡片；
 - 短语保留 `RANK`、`freq.`、`dict.`、`cmpt.` 与 `spoken` 数据；
 - Phrase Frequency 与相邻同形词的 Word Frequency 分开呈现；
 - 隐藏卡片内的词性占比条，保留卡片下方的释义占比胶囊；
-- 支持多词性、缺失来源、长数值和动态追加词条；
+- 可独立控制 iWeb、COCA、Spoken、Phrase Frequency、考试标签与星级；
+- 当前查询没有对应内容时自动省略设置项，修改后立即生效并自动保存；
+- 设置浮层保持在视口内，点击页面其他位置即可关闭；
 - 适配 320–720 CSS px、浅色模式与深色模式。
 
 ## 安装
 
 > 仓库不直接保存 `TLD.mdx`。请从项目的 [Releases](https://github.com/M3tar/The_Little_Dict_Refreshed/releases) 页面下载完整词典包，不要下载 GitHub 自动生成的 Source code ZIP。
 
-1. 在 Releases 页面下载 `TLD_Refreshed_v0.1.0_Android.zip`；
+1. 在 Releases 页面下载 `TLD_Refreshed_v0.2.0.zip`（已在 Android 与 iOS 实机验证）；
 2. 解压并确认其中包含 `TLD.mdx`、`TLD.png`、`config.ini`、`fy.js` 和 `p.css`；
 3. 在欧路词典中导入 `TLD.mdx`，并确保其他配套文件与其位于同一目录；
 4. 查询 `listen` 和 `go on`，确认 Word Frequency 与 Phrase Frequency 正常显示。
@@ -57,7 +68,7 @@ The Little Dict · Refreshed 在不修改词典正文与原始词频数据的前
 
 ## 显示配置
 
-`config.ini` 提供首次导入时的默认显示设置。第二阶段页面设置保存偏好后，`iweb`、`coca`、`spoken`、`EPFD` 和 `exam` 的已保存值优先于这里的默认值。
+`config.ini` 提供首次导入时的默认显示设置。页面设置保存偏好后，`iweb`、`coca`、`spoken`、`EPFD` 和 `exam` 的已保存值优先于这里的默认值。
 
 | 配置项 | 默认值 | 作用 |
 | --- | ---: | --- |
@@ -88,25 +99,24 @@ p.css         布局、主题与响应式样式
 
 ## 验证状态
 
-- Android 实机：0.1.0 核心查询界面已验收；第二阶段 b06 暴露浮层左上角定位和外部点击关闭问题，b07 等待实机复验；
+- Android 与 iOS 实机：v0.2.0 完整包均可稳定运行；Android 已核对浅色、深色、单词、短语、相邻同形词及页面显示设置；
 - 本地 Chromium：正式源码与 b07 测试包各 39 组回归通过，混合缓存定位、透明外部点击层和折叠浮层专项通过；
 - 覆盖宽度：320、360、375、390、430、720 CSS px；
-- iOS：尚未进行实机测试。
+- 正式包：不含测试编号，包内资源与已验收源码一致。
 
 ## 路线图
 
-**0.1.0 · 稳定查询版（当前版本）**
+**0.2.0 · 可配置查询版（当前版本）**
 
-稳定查询单词、短语和词频，不改变词典正文数据。
+在 0.1.0 的稳定查询基础上，加入五项独立显示开关、内容感知设置项、自动保存与浮层交互。
 
-**下一版本 · 页面显示设置（开发中）**
+**0.1.0 · 稳定查询版**
 
-- 在词典分组标题右侧提供横向滑杆入口和轻量浮层；
-- 独立控制 iWeb、COCA、Spoken、Phrase Frequency、考试标签与星级；
-- 当前查询没有真实内容时省略对应设置项；
-- 设置立即生效并自动保存到后续查询。
+完成单词、短语、三来源词频、相邻同形词、释义占比胶囊及响应式深色模式的稳定显示。
 
-这一阶段只控制 0.1.0 已稳定模块的显隐，不重新设计词频数据结构；暂不加入简洁模式、页面内恢复默认入口，也不控制卡片下方的释义占比胶囊。
+**下一阶段**
+
+尚未定义。后续功能会继续以不修改词典正文和原始词频数据为前提，并在开发前单独确认范围。
 
 ## 开发约束
 
