@@ -11,9 +11,38 @@ The Little Dict · Refreshed 在不修改词典正文与原始词频数据的前
 
 ## 实机效果
 
-以下截图来自 Android 实机，仅裁去状态栏、宿主工具栏和其他词典内容，没有重新生成或重绘界面文字。v0.2.0 完整包已在 Android 与 iOS 实机稳定运行；v0.2.1 进一步通过 macOS 欧路桌面端验收。
+以下均为欧路词典中的真实运行效果，没有重新生成或重绘界面文字。v0.2.0 完整包已在 Android 与 iOS 实机稳定运行；v0.2.1 进一步通过 macOS 欧路桌面端验收。
 
-### 页面显示设置
+### 改造前后
+
+<p align="center">
+  <a href="./assets/readme/screenshots/comparison/mobile-before-after.jpg"><img src="./assets/readme/screenshots/comparison/mobile-before-after.jpg" width="100%" alt="The Little Dict 原始界面与 Refreshed 卡片词频及页面设置界面的手机实机对比"></a>
+</p>
+
+<p align="center"><sub>左：原始展示　·　右：Refreshed 词频卡片与页面显示设置（点击图片查看原尺寸）</sub></p>
+
+### macOS 桌面端
+
+<p align="center">
+  <a href="./assets/readme/screenshots/macos/settings-light.png"><img src="./assets/readme/screenshots/macos/settings-light.png" width="48%" align="top" alt="macOS 欧路词典浅色模式下的页面显示设置"></a>
+  <a href="./assets/readme/screenshots/macos/settings-dark.png"><img src="./assets/readme/screenshots/macos/settings-dark.png" width="48%" align="top" alt="macOS 欧路词典深色模式下的页面显示设置"></a>
+</p>
+
+<p align="center"><sub>左：浅色模式　·　右：深色模式（点击图片查看原尺寸）</sub></p>
+
+<details>
+<summary>查看更多 macOS 浅色模式词频效果</summary>
+
+<p align="center">
+  <a href="./assets/readme/screenshots/macos/word-frequency-light.png"><img src="./assets/readme/screenshots/macos/word-frequency-light.png" width="48%" align="top" alt="macOS 欧路词典中 ambitious 的三来源词频卡片"></a>
+  <a href="./assets/readme/screenshots/macos/word-frequency-multi-pos-light.png"><img src="./assets/readme/screenshots/macos/word-frequency-multi-pos-light.png" width="48%" align="top" alt="macOS 欧路词典中 tough 的多词性三来源词频卡片"></a>
+</p>
+
+<p align="center"><sub>左：单一词性词频　·　右：多词性词频</sub></p>
+
+</details>
+
+### 移动端页面显示设置
 
 <p align="center">
   <a href="./assets/readme/screenshots/settings-light.png"><img src="./assets/readme/screenshots/settings-light.png" width="48%" align="top" alt="浅色模式下的页面显示设置浮层"></a>
@@ -22,7 +51,7 @@ The Little Dict · Refreshed 在不修改词典正文与原始词频数据的前
 
 <p align="center"><sub>左：浅色模式　·　右：深色模式（点击图片查看原尺寸）</sub></p>
 
-### 单词查询
+### 移动端单词查询
 
 <p align="center">
   <a href="./assets/readme/screenshots/listen-light.png"><img src="./assets/readme/screenshots/listen-light.png" width="48%" align="top" alt="浅色模式下 listen 的三来源词频、释义占比与中文释义"></a>
@@ -31,7 +60,7 @@ The Little Dict · Refreshed 在不修改词典正文与原始词频数据的前
 
 <p align="center"><sub>左：浅色模式　·　右：深色模式（点击图片查看原尺寸）</sub></p>
 
-### 短语与相邻同形词查询
+### 移动端短语与相邻同形词查询
 
 <p align="center">
   <a href="./assets/readme/screenshots/go-on-light.png"><img src="./assets/readme/screenshots/go-on-light.png" width="48%" align="top" alt="浅色模式下 go on 和 goon 的查询结果"></a>
