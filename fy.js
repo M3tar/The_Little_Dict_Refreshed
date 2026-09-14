@@ -65,6 +65,7 @@ if (!t) {
 					displaySettingsStyleSource = 'fallback';
 					var css = [
 						'.tld-host-heading{position:relative!important;display:flex!important;align-items:center!important;min-width:0!important;overflow:visible!important}',
+						'.tld-host-heading>a{min-width:0!important;flex:1 1 auto!important}',
 						'.tld-host-heading-label{min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}',
 						'.tld-display-settings-root{position:relative!important;display:inline-flex!important;flex:0 0 auto!important;align-self:center!important;align-items:center!important;height:34px!important;margin-left:auto!important;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei UI","PingFang SC",sans-serif!important;line-height:1!important;vertical-align:middle!important;z-index:1000!important}',
 						'.tld-display-settings-trigger{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;margin:0 4px 0 8px!important;padding:0!important;border:0!important;border-radius:50%!important;-webkit-appearance:none!important;appearance:none!important;background:transparent!important;color:#607d8b!important;box-sizing:border-box!important;touch-action:manipulation!important}',
@@ -948,11 +949,48 @@ if (!t) {
 				function findHostTitleElement() {
 					var $mounted = $('.tld-host-heading').first();
 					if ($mounted.length) return $mounted;
+					var $desktopTitleLink = $('.expHead > a').filter(function () {
+						var text = $.trim($(this).text());
+						return text === 'The Little Dict' || text === 'The Little Dict · Refreshed';
+					}).first();
+					if ($desktopTitleLink.length) return $desktopTitleLink.parent();
 					return $('body *').filter(function () {
 						if ($(this).children().length) return false;
 						var text = $.trim($(this).text());
 						return text === 'The Little Dict' || text === 'The Little Dict · Refreshed';
 					}).first();
+				}
+
+				function prepareHostTitleElement($title) {
+					var labelText = 'The Little Dict · Refreshed';
+					var $desktopLink = $title.children('a').filter(function () {
+						var text = $.trim($(this).text());
+						return text === 'The Little Dict' || text === labelText;
+					}).first();
+
+					$title.addClass('tld-host-heading');
+					if (!$desktopLink.length) {
+						$title.empty().append($('<span class="tld-host-heading-label"></span>').text(labelText));
+						return;
+					}
+
+					var $label = $desktopLink.children('.tld-host-heading-label').first();
+					if (!$label.length) {
+						var link = $desktopLink[0];
+						for (var nodeIndex = 0; nodeIndex < link.childNodes.length; nodeIndex++) {
+							var node = link.childNodes[nodeIndex];
+							if (node.nodeType !== 3) continue;
+							var nodeText = $.trim(node.nodeValue || '');
+							if (nodeText !== 'The Little Dict' && nodeText !== labelText) continue;
+							var label = document.createElement('span');
+							label.className = 'tld-host-heading-label';
+							label.textContent = labelText;
+							link.replaceChild(label, node);
+							$label = $(label);
+							break;
+						}
+					}
+					if ($label.length) $label.text(labelText);
 				}
 
 				function bindDisplaySettingsOutsideClose() {
@@ -1010,11 +1048,7 @@ if (!t) {
 					var $title = findHostTitleElement();
 					if (!$title.length) return false;
 
-					if (!$title.hasClass('tld-host-heading')) {
-						$title.empty();
-						$title.addClass('tld-host-heading');
-						$title.append('<span class="tld-host-heading-label">The Little Dict · Refreshed</span>');
-					}
+					if (!$title.hasClass('tld-host-heading')) prepareHostTitleElement($title);
 					var $popover = ensureDisplaySettingsPopover();
 					var $dismissLayer = $('#tld-display-settings-dismiss-layer').first();
 

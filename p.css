@@ -25,6 +25,11 @@ body {
     overflow: visible !important;
 }
 
+.tld-host-heading > a {
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
 .tld-host-heading-label {
     min-width: 0;
     overflow: hidden;

@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
      width="1200" height="440" viewBox="0 0 1200 440"
      role="img" aria-labelledby="title desc">
-  <title id="title">The Little Dict Refreshed 0.2.0</title>
-  <desc id="desc">稳定查询与可配置词频显示，右侧展示浅色与深色移动端实机界面。</desc>
+  <title id="title">The Little Dict Refreshed 0.2.1</title>
+  <desc id="desc">稳定查询与可配置词频显示，支持欧路词典移动端与桌面端。</desc>
   <defs>
     <clipPath id="light-shot"><rect x="678" y="34" width="466" height="372" rx="22"/></clipPath>
     <clipPath id="dark-shot"><rect x="1024" y="238" width="120" height="168" rx="16"/></clipPath>
@@ -12,7 +12,7 @@
   <path d="M0 352H620" stroke="#293036"/>
   <circle cx="67" cy="56" r="7" fill="#72A9BC"/>
   <text x="86" y="63" fill="#9CA3AA" font-size="18" font-weight="650"
-        font-family="ui-monospace, SFMono-Regular, Menlo, monospace">MOBILE DICTIONARY · v0.2.0</text>
+        font-family="ui-monospace, SFMono-Regular, Menlo, monospace">EUDIC DICTIONARY · v0.2.1</text>
 
   <text x="64" y="146" fill="#F8F5EE" font-size="64" font-weight="760"
         font-family="-apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, sans-serif">The Little Dict</text>
@@ -22,7 +22,7 @@
   <text x="64" y="264" fill="#E7E2D8" font-size="25" font-weight="540"
         font-family="-apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, sans-serif">稳定查询与可配置词频显示</text>
   <text x="64" y="304" fill="#9CA3AA" font-size="20"
-        font-family="-apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, sans-serif">为欧路词典移动阅读重新整理信息层级</text>
+        font-family="-apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, sans-serif">为欧路词典移动端与桌面端重新整理信息层级</text>
 
   <g transform="translate(64 375)">
     <rect width="118" height="38" rx="19" fill="#18313B" stroke="#72A9BC"/>
