@@ -39,7 +39,8 @@ if (!t) {
 					{ key: 'coca', label: 'COCA' },
 					{ key: 'spoken', label: 'Spoken' },
 					{ key: 'phrase', label: 'Phrase Frequency' },
-					{ key: 'exam', label: '考试标签与星级' }
+					{ key: 'exam', label: '考试标签' },
+					{ key: 'stars', label: '柯林斯星级' }
 				];
 				var displayStorageAvailable = true;
 				var displaySettingsStyleSource = 'external';
@@ -132,19 +133,13 @@ if (!t) {
 					coca: configFlag(window.coca),
 					spoken: configFlag(window.spoken),
 					phrase: configFlag(window.EPFD),
-					exam: configFlag(window.exam)
+					exam: configFlag(window.exam),
+					stars: configFlag(typeof window.collins_stars === 'undefined' ? window.exam : window.collins_stars)
 				};
 
-				function loadDisplaySettings() {
+				function readDisplaySettings() {
 					var values = $.extend({}, displayDefaults);
-					var raw = '';
-					try {
-						if (!window.localStorage) throw new Error('localStorage unavailable');
-						raw = window.localStorage.getItem(DISPLAY_SETTINGS_STORAGE_KEY);
-					} catch (error) {
-						displayStorageAvailable = false;
-						return values;
-					}
+					var raw = window.localStorage.getItem(DISPLAY_SETTINGS_STORAGE_KEY);
 					if (!raw) return values;
 					try {
 						var parsed = JSON.parse(raw);
@@ -153,25 +148,39 @@ if (!t) {
 							var key = DISPLAY_SETTING_DEFINITIONS[i].key;
 							if (typeof parsed.values[key] === 'boolean') values[key] = parsed.values[key];
 						}
+						if (typeof parsed.values.stars !== 'boolean' && typeof parsed.values.exam === 'boolean') {
+							values.stars = parsed.values.exam;
+						}
 					} catch (error) {
 						return values;
 					}
 					return values;
 				}
 
-				var displaySettings = loadDisplaySettings();
+				var displaySettings;
+				try {
+					displaySettings = readDisplaySettings();
+				} catch (error) {
+					displayStorageAvailable = false;
+					displaySettings = $.extend({}, displayDefaults);
+				}
+				var pendingDisplaySettings = {};
 
 				function getDisplaySetting(key) {
 					return Boolean(displaySettings[key]);
 				}
 
-				function persistDisplaySettings() {
+				function persistDisplaySettings(key) {
+					pendingDisplaySettings[key] = displaySettings[key];
 					try {
-						if (!window.localStorage) throw new Error('localStorage unavailable');
+						// A second query view may have saved a different switch since this view loaded.
+						var values = $.extend(readDisplaySettings(), pendingDisplaySettings);
 						window.localStorage.setItem(DISPLAY_SETTINGS_STORAGE_KEY, JSON.stringify({
 							version: 1,
-							values: displaySettings
+							values: values
 						}));
+						displaySettings = values;
+						pendingDisplaySettings = {};
 						displayStorageAvailable = true;
 						return true;
 					} catch (error) {
@@ -197,9 +206,6 @@ if (!t) {
 				if (!getDisplaySetting('spoken')) {
 					$(".srank").hide();
 				}
-				if (!getDisplaySetting('exam')) {
-					$(".word-frequency").hide();
-			}
 			if (!window.ex_ratio) {
 				$(".coca2").hide();
 			}
@@ -812,12 +818,31 @@ if (!t) {
 					});
 				}
 
-				function applyExamVisibility(root) {
-					var enabled = getDisplaySetting('exam');
+				function hasExamLabels($labels) {
+					return $labels.filter(function () {
+						var text = this.textContent.replace(/[\s\u00A0\u200B-\u200D\uFEFF]+/g, '');
+						return Boolean(text || this.querySelector('img, canvas, svg'));
+					}).length > 0;
+				}
+
+				function hasCollinsStars($groups) {
+					return $groups.children('.level').children('.round').length > 0;
+				}
+
+				function applyExamAndStarVisibility(root) {
 					findInScope(root, '.word-frequency').each(function () {
-						var $labels = $(this);
-						$labels.toggle(enabled);
-						$labels.attr('aria-hidden', enabled ? 'false' : 'true');
+						var $row = $(this);
+						var $labels = $row.children('.label');
+						var $stars = $row.children('.tld-star-group');
+						var showLabels = getDisplaySetting('exam') && hasExamLabels($labels);
+						var showStars = getDisplaySetting('stars') && hasCollinsStars($stars);
+						// Some legacy entries contain definitions inside this row because of malformed markup.
+						var hasOtherContent = $row.children().not('.label, .tld-star-group, script, style, link').length ||
+							$row.contents().filter(function () { return this.nodeType === 3 && $.trim(this.nodeValue); }).length;
+						var showRow = Boolean(showLabels || showStars || hasOtherContent);
+						$labels.toggle(showLabels).attr('aria-hidden', showLabels ? 'false' : 'true');
+						$stars.toggle(showStars).attr('aria-hidden', showStars ? 'false' : 'true');
+						$row.toggle(showRow).attr('aria-hidden', showRow ? 'false' : 'true');
 					});
 				}
 
@@ -828,25 +853,19 @@ if (!t) {
 						applyWordFrequencyVisibility($(this));
 					});
 					applyPhraseFrequencyVisibility(root);
-					applyExamVisibility(root);
+					applyExamAndStarVisibility(root);
 					updateDisplaySettingsUi();
 				}
 
 				function getDisplayAvailability() {
-					function hasMeaningfulExamContent() {
-						return $('.word-frequency').filter(function () {
-							var $node = $(this);
-							var text = $node.text().replace(/[\s\u00A0\u200B-\u200D\uFEFF]+/g, '');
-							return Boolean(text || $node.find('img, canvas, svg').length);
-						}).length > 0;
-					}
-
+					var $examRows = $('.word-frequency');
 					return {
 						iweb: $('.frequency-source[data-source-key="iweb"][data-source-available="true"]').length > 0,
 						coca: $('.frequency-source[data-source-key="coca"][data-source-available="true"]').length > 0,
 						spoken: $('.frequency-source[data-source-key="spoken"][data-source-available="true"]').length > 0,
 						phrase: $('.phrase-frequency-section[data-setting-available="true"]').length > 0,
-						exam: hasMeaningfulExamContent()
+						exam: hasExamLabels($examRows.children('.label')),
+						stars: hasCollinsStars($examRows.children('.tld-star-group'))
 					};
 				}
 
@@ -965,7 +984,7 @@ if (!t) {
 					}
 					if (!known) return false;
 					displaySettings[key] = Boolean(enabled);
-					persistDisplaySettings();
+					persistDisplaySettings(key);
 					applyDisplaySettings(document);
 					return true;
 				}

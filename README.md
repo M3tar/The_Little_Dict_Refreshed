@@ -98,7 +98,9 @@ The Little Dict · Refreshed 在不修改词典正文与原始词频数据的前
 
 ## 显示配置
 
-`config.ini` 提供首次导入时的默认显示设置。页面设置保存偏好后，`iweb`、`coca`、`spoken`、`EPFD` 和 `exam` 的已保存值优先于这里的默认值。
+`config.ini` 提供首次导入时的默认显示设置。已保存的页面偏好优先。
+
+下表的 `exam` 和 `collins_stars` 对应 v0.3.0。升级时，考试标签和柯林斯星级先继承旧版合并开关的已保存状态，之后分别保存。旧版 `config.ini` 缺少 `collins_stars` 时，星级的首次使用默认值沿用 `exam`。
 
 | 配置项 | 默认值 | 作用 |
 | --- | ---: | --- |
@@ -108,7 +110,8 @@ The Little Dict · Refreshed 在不修改词典正文与原始词频数据的前
 | `coca` | `1` | 显示 COCA 来源 |
 | `spoken` | `1` | 显示 Spoken 来源 |
 | `EPFD` | `1` | 显示 Phrase Frequency |
-| `exam` | `1` | 显示考试标签与柯林斯星级 |
+| `exam` | `1` | 显示考试标签 |
+| `collins_stars` | `1` | 显示柯林斯星级 |
 | `ex_ratio` | `1` | 显示卡片下方的释义占比胶囊 |
 | `definition` | `1` | 显示按词性分组的中文释义 |
 | `dark_mode` | `0` | 跟随宿主；`1` 浅色，`2` 深色 |
