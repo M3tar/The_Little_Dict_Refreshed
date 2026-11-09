@@ -32,8 +32,7 @@ if (!t) {
 		}
 		return _mobile;
 	}
-		jQuery(function () {
-			(function ($) {
+		function initializeTld($) {
 				var DISPLAY_SETTINGS_STORAGE_KEY = 'tld-refreshed.display-settings.v1';
 				var DISPLAY_SETTING_DEFINITIONS = [
 					{ key: 'iweb', label: 'iWeb' },
@@ -47,7 +46,7 @@ if (!t) {
 
 				// 欧路可能分别缓存同名 JS/CSS。仅当新版设置样式未命中时注入组件级兼容样式，
 				// 避免 SVG、浮层和开关退化为宿主默认布局；外部 CSS 的构建号仍独立诊断。
-				function ensureDisplaySettingsStyles() {
+				function ensureCompatibilityStyles() {
 					var existingFallback = document.getElementById('tld-display-settings-fallback-styles');
 					if (existingFallback) {
 						displaySettingsStyleSource = 'fallback';
@@ -58,18 +57,38 @@ if (!t) {
 					probe.className = 'tld-display-settings-style-probe';
 					probe.style.cssText = 'visibility:hidden;pointer-events:none;';
 					document.body.appendChild(probe);
-					var externalStylesReady = window.getComputedStyle && window.getComputedStyle(probe).left === '-1234px';
+					var probeStyles = window.getComputedStyle && window.getComputedStyle(probe);
+					var externalStylesReady = probeStyles && probeStyles.left === '-1234px';
+					var entryStylesReady = probeStyles && probeStyles.top === '-1235px';
 					probe.parentNode.removeChild(probe);
+					if (!entryStylesReady) {
+						// Match the entry's heading geometry while the stylesheet is still arriving.
+						var entryStyle = document.createElement('style');
+						entryStyle.textContent = [
+							'body{--tld-font-sans:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei UI","PingFang SC","Hiragino Sans GB",sans-serif;font-size:13px!important;line-height:1.4em!important;font-family:var(--tld-font-sans)!important}',
+							'.dict-section-all{border:1px solid transparent}',
+							'.dict-section-top{padding:8px 12px;border-bottom:1px solid transparent}',
+							'.hwrap{padding:9px 13px 0}',
+							'.dict-section-top>.hwrap{padding:0}',
+							'.dict-section-top>.hwrap h2{font-family:var(--tld-font-sans);font-size:25px;margin:4px 0 6.5px;display:inline-block}',
+							'.hwrap .git{display:inline-block;margin-left:6px}',
+							'.git .frm{margin-left:10px}',
+							'.hwrap .git .ipa.tld-ipa-display::before{content:attr(aria-label)}'
+						].join('');
+						var styleParent = document.head || document.documentElement;
+						styleParent.insertBefore(entryStyle, styleParent.firstChild);
+					}
 					if (externalStylesReady) return;
 
 					displaySettingsStyleSource = 'fallback';
 					var css = [
 						'.tld-host-heading{position:relative!important;display:flex!important;align-items:center!important;min-width:0!important;overflow:visible!important}',
 						'.tld-host-heading>a{min-width:0!important;flex:1 1 auto!important}',
-						'.tld-host-heading-label{min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}',
-						'.tld-display-settings-root{position:relative!important;display:inline-flex!important;flex:0 0 auto!important;align-self:center!important;align-items:center!important;height:34px!important;margin-left:auto!important;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei UI","PingFang SC",sans-serif!important;line-height:1!important;vertical-align:middle!important;z-index:1000!important}',
-						'.tld-display-settings-trigger{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;margin:0 4px 0 8px!important;padding:0!important;border:0!important;border-radius:50%!important;-webkit-appearance:none!important;appearance:none!important;background:transparent!important;color:#607d8b!important;box-sizing:border-box!important;touch-action:manipulation!important}',
-						'.tld-display-settings-trigger svg{display:block!important;width:20px!important;height:20px!important;min-width:20px!important;min-height:20px!important;max-width:20px!important;max-height:20px!important;margin:0!important;padding:0!important;background:transparent!important;fill:none!important;stroke:currentColor!important;stroke-width:1.8!important;stroke-linecap:round!important;stroke-linejoin:round!important;pointer-events:none!important}',
+						'.tld-host-heading-label{min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;pointer-events:none!important}',
+						'.tld-host-heading-label,.tld-host-heading>a,.hwrap .git .ipa{-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none}',
+						'.tld-display-settings-root{position:relative!important;display:inline-flex!important;flex:0 0 auto!important;align-self:center!important;align-items:center!important;height:20px!important;height:1lh!important;max-height:34px!important;margin-left:auto!important;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei UI","PingFang SC",sans-serif!important;line-height:inherit!important;vertical-align:middle!important;z-index:1000!important}',
+						'.tld-display-settings-trigger{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:34px!important;height:100%!important;min-width:34px!important;margin:0 4px 0 8px!important;padding:0!important;border:0!important;border-radius:50%!important;-webkit-appearance:none!important;appearance:none!important;background:transparent!important;color:#607d8b!important;box-sizing:border-box!important;touch-action:manipulation!important}',
+						'.tld-display-settings-trigger svg{display:block!important;width:20px!important;height:20px!important;max-width:20px!important;max-height:100%!important;margin:0!important;padding:0!important;background:transparent!important;fill:none!important;stroke:currentColor!important;stroke-width:1.8!important;stroke-linecap:round!important;stroke-linejoin:round!important;pointer-events:none!important}',
 						'.tld-display-settings-root.is-open .tld-display-settings-trigger{background:rgba(79,113,133,.13)!important;color:#3f7084!important}',
 						'.tld-display-settings-dismiss-layer{position:fixed!important;top:0!important;right:0!important;bottom:0!important;left:0!important;display:block!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important;z-index:2147482999!important}',
 						'.tld-display-settings-dismiss-layer[hidden]{display:none!important}',
@@ -160,7 +179,7 @@ if (!t) {
 						return false;
 					}
 				}
-				ensureDisplaySettingsStyles();
+				ensureCompatibilityStyles();
 				$(".pf a").each(function () {
 				if ($(this).css("display") == "inline-block") {
 					$(this).find("img").css("cssText", "display:block;!important")
@@ -380,7 +399,7 @@ if (!t) {
 					return !$(this).closest('.dict-section-all').length;
 				}).each(function () {
 					var $node = $(this);
-					var $entry = $node.prevAll('.dict-section-all').first();
+					var $entry = $node.prevAll('.hwrap, .dict-section-all').first().filter('.dict-section-all');
 					if (!$entry.length) return;
 					var $target = $node.is('.pf, .word-frequency')
 						? $entry.children('.dict-section-top').first()
@@ -435,8 +454,6 @@ if (!t) {
 					});
 				}
 			}
-			wrapDictSections();
-			renderEntrySeparators();
 
 			// 同一词条的全部 .epfd 共同组成一个短语词频组件
 			function wrapPhraseFrequencySections(root) {
@@ -516,7 +533,6 @@ if (!t) {
 					bindCollapsibleSection($section, '.phrase-frequency-header', '.phrase-frequency-body');
 				});
 			}
-			wrapPhraseFrequencySections();
 
 			// Stable Lookup 的唯一单词词频渲染路径。
 			var POS_LABELS = {
@@ -700,7 +716,6 @@ if (!t) {
 					});
 			}
 
-			renderStableWordFrequency();
 
 			// 将 .coca2 中的“释义(百分比)”解析成标签胶囊
 			function renderCoca2Pills(root) {
@@ -736,7 +751,6 @@ if (!t) {
 					}
 				});
 			}
-			renderCoca2Pills();
 
 			// 汉化考试等级标签
 			function localizeExamLabels(root) {
@@ -776,7 +790,17 @@ if (!t) {
 					}
 				}
 				}
-				localizeExamLabels();
+
+			function groupExamStars(root) {
+				findInScope(root, '.word-frequency').each(function () {
+					var $labels = $(this);
+					var $stars = $labels.children('.level');
+					if (!$stars.length) return;
+					var $group = $labels.children('.tld-star-group').first();
+					if (!$group.length) $group = $('<div class="tld-star-group"></div>').insertBefore($stars.first());
+					$group.append($stars);
+				});
+			}
 
 				function applyPhraseFrequencyVisibility(root) {
 					var enabled = getDisplaySetting('phrase');
@@ -993,6 +1017,16 @@ if (!t) {
 					if ($label.length) $label.text(labelText);
 				}
 
+				function preventDecorativeTextLookup(event) {
+					var $target = $(event.target);
+					var isIpa = $target.closest('.dict-section-top .hwrap .ipa').length;
+					var isTitle = $target.closest('.tld-host-heading').length;
+					// The title's single click belongs to the host's collapse control.
+					if (!isIpa && (!isTitle || event.type === 'click')) return;
+					event.preventDefault();
+					event.stopPropagation();
+				}
+
 				function bindDisplaySettingsOutsideClose() {
 					if (document.__tldDisplaySettingsOutsideBound) return;
 					var handleOutsideInteraction = function (event) {
@@ -1090,8 +1124,36 @@ if (!t) {
 					return true;
 				}
 
-				applyDisplaySettings(document);
+			function renderIpaText(root) {
+				findInScope(root, '.hwrap .git .ipa').each(function () {
+					if (this.children.length || !$.trim(this.textContent)) return;
+					// Coordinate-based lookup can still read a text node with user-select disabled.
+					this.setAttribute('aria-label', this.textContent);
+					this.setAttribute('role', 'img');
+					this.classList.add('tld-ipa-display');
+					this.textContent = '';
+				});
+			}
+
+			function normalizeEntryContent(root) {
+				adoptLateEntryNodes(root);
+				wrapDictSections(root);
+				renderIpaText(root);
+				findInScope(root, '.coca').find('.table').hide().attr('aria-hidden', 'true');
+				wrapPhraseFrequencySections(root);
+				renderStableWordFrequency(root);
+				renderCoca2Pills(root);
+				localizeExamLabels(root);
+				groupExamStars(root);
+			}
+
+			normalizeEntryContent(document);
+			renderEntrySeparators();
+			applyDisplaySettings(document);
 				mountDisplaySettings();
+			document.addEventListener('click', preventDecorativeTextLookup, true);
+			document.addEventListener('dblclick', preventDecorativeTextLookup, true);
+			document.addEventListener('selectstart', preventDecorativeTextLookup, true);
 
 				// 根据系统主题自动切换深色模式（欧路通过 body 的 black/night 类，非欧路通过 prefers-color-scheme）
 			function applyTheme(theme) {
@@ -1183,75 +1245,43 @@ if (!t) {
 
 			// 监听 DOM 变化，兼容内容被词典软件延迟注入或重新渲染的情况
 			if (typeof MutationObserver !== 'undefined') {
-				var pendingRoots = [];
-				var updateScheduled = false;
-				var scheduleFrame = window.requestAnimationFrame || function (callback) {
-					return window.setTimeout(callback, 16);
-				};
-
-				function queueRoot(root) {
-					if (!root || pendingRoots.indexOf(root) >= 0) return;
-					pendingRoots.push(root);
-				}
-
-				function flushAddedContent() {
-					updateScheduled = false;
-					var roots = pendingRoots.slice();
-					pendingRoots = [];
-
-					for (var rootIndex = 0; rootIndex < roots.length; rootIndex++) {
-						var root = roots[rootIndex];
-						wrapDictSections(root);
-						adoptLateEntryNodes(root);
-						renderEntrySeparators();
-							wrapPhraseFrequencySections(root);
-							renderStableWordFrequency(root);
-							renderCoca2Pills(root);
-							localizeExamLabels(root);
-						}
-
-						applyDisplaySettings(document);
-						mountDisplaySettings();
-						applyTheme($(document.body).hasClass('tld-dark') ? 'dark' : 'light');
-				}
-
+				var queryContentSelector = '.hwrap, .hwrap .git .ipa, .pf, .word-frequency, .epfd, .coca, .srank, .coca2, .gdc';
 				var dictObserver = new MutationObserver(function (mutations) {
+					var roots = [];
 					var queryContentChanged = false;
-					var queryContentSelector = '.hwrap, .pf, .word-frequency, .epfd, .coca, .srank, .coca2, .gdc';
 					for (var mutationIndex = 0; mutationIndex < mutations.length; mutationIndex++) {
 						var addedNodes = mutations[mutationIndex].addedNodes;
 						for (var nodeIndex = 0; nodeIndex < addedNodes.length; nodeIndex++) {
 							var node = addedNodes[nodeIndex];
-							if (node.nodeType === 1 && !$(node).closest('.tld-display-settings-root').length &&
-								($(node).is(queryContentSelector) || $(node).find(queryContentSelector).length)) {
-								queryContentChanged = true;
-							}
-							queueRoot(node.nodeType === 1 ? node : node.parentNode);
+							if (!document.body.contains(node)) continue;
+							var $node = $(node.nodeType === 1 ? node : node.parentNode);
+							var entryContent = node.nodeType === 1 && ($node.is(queryContentSelector) || $node.find(queryContentSelector).length);
+							var root = entryContent ? node : $node.closest('.word-frequency, .hwrap .git .ipa')[0];
+							if (entryContent) queryContentChanged = true;
+							if (root && roots.indexOf(root) < 0) roots.push(root);
 						}
 					}
+
+					// Normalize a host insertion in the observer microtask, before the next paint.
 					if (queryContentChanged) closeDisplaySettings();
-					if (pendingRoots.length && !updateScheduled) {
-						updateScheduled = true;
-						scheduleFrame(flushAddedContent);
+					if (roots.length) {
+						for (var rootIndex = 0; rootIndex < roots.length; rootIndex++) normalizeEntryContent(roots[rootIndex]);
+						renderEntrySeparators();
+						applyDisplaySettings(document);
+						applyTheme($(document.body).hasClass('tld-dark') ? 'dark' : 'light');
 					}
+					if (!document.querySelector('.tld-host-heading > .tld-display-settings-root')) mountDisplaySettings();
+					dictObserver.takeRecords();
 				});
 				dictObserver.observe(document.body, { childList: true, subtree: true });
 			}
-		})(jQuery);
-	})
-	jQuery(function () {
-		(function ($) {
-			// COCA frequency details intentionally remain hidden in Stable Lookup.
-			$(".coca .table").hide().attr("aria-hidden", "true");
-		})(jQuery);
-	});
+		}
+
+		// MDX loads fy.js after the entry. Avoid the asynchronous jQuery ready callback there.
+		if (document.body && (document.readyState !== 'loading' || document.querySelector('.hwrap'))) {
+			initializeTld(jQuery);
+		} else {
+			document.addEventListener('DOMContentLoaded', function () { initializeTld(jQuery); });
+		}
 }
 t = 1;
-
-// 正式版标题和设置入口由同一幂等挂载逻辑维护；测试构建标记不进入发布代码。
-(function ($) {
-	if (!$ || typeof document === 'undefined') return;
-	$(function () {
-		if (window.mountTldDisplaySettings) window.mountTldDisplaySettings();
-	});
-})(typeof jQuery !== 'undefined' ? jQuery : null);
