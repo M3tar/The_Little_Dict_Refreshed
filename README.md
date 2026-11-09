@@ -1,64 +1,70 @@
 <p align="center">
-  <img src="./assets/readme/hero.png" width="100%" alt="The Little Dict Refreshed 0.2.1：稳定查询与可配置词频显示">
+  <img src="./assets/readme/hero.png" width="100%" alt="The Little Dict Refreshed v0.3.0，展示欧路词典的词频卡片、考试标签和柯林斯星级独立开关">
 </p>
 
 <p align="center">
-  <strong>v0.2.1 · 桌面兼容更新</strong><br>
+  <strong>v0.3.0 · 标签和星级拆分与查词修复</strong><br>
   面向欧路词典移动端与桌面端的稳定查询与显示控制
 </p>
 
-The Little Dict · Refreshed 在不修改词典正文与原始词频数据的前提下，重新整理单词、短语、词频来源与中文释义，并允许按需显示 iWeb、COCA、Spoken、Phrase Frequency、考试标签与星级。设置自动保存，让后续查询在移动端、桌面端、深色模式和动态加载场景中保持清晰、稳定。
+The Little Dict · Refreshed 在保留词典正文与原始词频数据的基础上，重新整理单词、短语、词频来源与中文释义。iWeb、COCA、Spoken、Phrase Frequency、考试标签和柯林斯星级均可独立开关，设置自动保存。
 
 ## 实机效果
 
-以下均为欧路词典中的真实运行效果，没有重新生成或重绘界面文字。v0.2.0 完整包已在 Android 与 iOS 实机稳定运行；v0.2.1 进一步通过 macOS 欧路桌面端验收。
+封面、改造对比中的 Refreshed 界面、macOS 和移动端设置与单词查询使用 v0.3.0 实机截图。短语示例来自 v0.2.x。
 
 ### 改造前后
 
 <p align="center">
-  <a href="./assets/readme/screenshots/comparison/mobile-before-after.jpg"><img src="./assets/readme/screenshots/comparison/mobile-before-after.jpg" width="100%" alt="The Little Dict 原始界面与 Refreshed 卡片词频及页面设置界面的手机实机对比"></a>
+  <a href="./assets/readme/screenshots/comparison/mobile-before-after.jpg"><img src="./assets/readme/screenshots/comparison/mobile-before-after.jpg" width="100%" alt="手机实机对比，左侧是原版 arise 词条，中间是 Refreshed v0.3.0 的 hamburger 词频卡片，右侧是考试标签与柯林斯星级独立开关"></a>
 </p>
 
-<p align="center"><sub>左：原始展示　·　右：Refreshed 词频卡片与页面显示设置（点击图片查看原尺寸）</sub></p>
+<p align="center"><sub>从左到右：原版词条、v0.3.0 词频卡片、v0.3.0 显示设置（点击图片查看大图）</sub></p>
 
 ### macOS 桌面端
 
 <p align="center">
-  <a href="./assets/readme/screenshots/macos/settings-light.png"><img src="./assets/readme/screenshots/macos/settings-light.png" width="48%" align="top" alt="macOS 欧路词典浅色模式下的页面显示设置"></a>
-  <a href="./assets/readme/screenshots/macos/settings-dark.png"><img src="./assets/readme/screenshots/macos/settings-dark.png" width="48%" align="top" alt="macOS 欧路词典深色模式下的页面显示设置"></a>
+  <a href="./assets/readme/screenshots/v0.3.0/macos-settings.png"><img src="./assets/readme/screenshots/v0.3.0/macos-settings.png" width="100%" alt="macOS 欧路词典中，箭头指向词条右侧的显示设置按钮，浮层中有考试标签和柯林斯星级两个开关"></a>
 </p>
 
-<p align="center"><sub>左：浅色模式　·　右：深色模式（点击图片查看原尺寸）</sub></p>
+<p align="center"><sub>点击词条右侧的滑杆按钮打开显示设置。点击图片可查看大图。</sub></p>
 
-<details>
-<summary>查看更多 macOS 浅色模式词频效果</summary>
+#### macOS 深色设置和词频卡片
 
 <p align="center">
-  <a href="./assets/readme/screenshots/macos/word-frequency-light.png"><img src="./assets/readme/screenshots/macos/word-frequency-light.png" width="48%" align="top" alt="macOS 欧路词典中 ambitious 的三来源词频卡片"></a>
-  <a href="./assets/readme/screenshots/macos/word-frequency-multi-pos-light.png"><img src="./assets/readme/screenshots/macos/word-frequency-multi-pos-light.png" width="48%" align="top" alt="macOS 欧路词典中 tough 的多词性三来源词频卡片"></a>
+  <a href="./assets/readme/screenshots/v0.3.0/macos-settings-dark.png"><img src="./assets/readme/screenshots/v0.3.0/macos-settings-dark.png" width="100%" alt="macOS 欧路词典深色模式下，ambitious 的设置浮层分别显示考试标签和柯林斯星级开关"></a>
 </p>
 
-<p align="center"><sub>左：单一词性词频　·　右：多词性词频</sub></p>
+<p align="center">
+  <a href="./assets/readme/screenshots/v0.3.0/macos-tough.png"><img src="./assets/readme/screenshots/v0.3.0/macos-tough.png" width="48%" align="top" alt="macOS 浅色模式下 tough 的三来源词频与多词性数据"></a>
+  <a href="./assets/readme/screenshots/v0.3.0/macos-ambitious-dark.png"><img src="./assets/readme/screenshots/v0.3.0/macos-ambitious-dark.png" width="48%" align="top" alt="macOS 深色模式下 ambitious 的三来源词频卡片"></a>
+</p>
 
-</details>
+<p align="center"><sub>左：tough 多词性词频　·　右：ambitious 深色词频卡片（点击图片查看大图）</sub></p>
 
 ### 移动端页面显示设置
 
 <p align="center">
-  <a href="./assets/readme/screenshots/settings-light.png"><img src="./assets/readme/screenshots/settings-light.png" width="48%" align="top" alt="浅色模式下的页面显示设置浮层"></a>
-  <a href="./assets/readme/screenshots/settings-dark.png"><img src="./assets/readme/screenshots/settings-dark.png" width="48%" align="top" alt="深色模式下的页面显示设置浮层"></a>
+  <a href="./assets/readme/screenshots/v0.3.0/settings-light.jpg"><img src="./assets/readme/screenshots/v0.3.0/settings-light.jpg" width="48%" align="top" alt="浅色模式下，考试标签和柯林斯星级分别显示为两个开关"></a>
+  <a href="./assets/readme/screenshots/v0.3.0/settings-dark.jpg"><img src="./assets/readme/screenshots/v0.3.0/settings-dark.jpg" width="48%" align="top" alt="深色模式下，考试标签和柯林斯星级分别显示为两个开关"></a>
 </p>
 
-<p align="center"><sub>左：浅色模式　·　右：深色模式（点击图片查看原尺寸）</sub></p>
+<p align="center"><sub>左：浅色模式　·　右：深色模式（点击图片查看大图）</sub></p>
 
 ### 移动端单词查询
 
 <p align="center">
-  <a href="./assets/readme/screenshots/listen-light.png"><img src="./assets/readme/screenshots/listen-light.png" width="48%" align="top" alt="浅色模式下 listen 的三来源词频、释义占比与中文释义"></a>
-  <a href="./assets/readme/screenshots/listen-dark.png"><img src="./assets/readme/screenshots/listen-dark.png" width="48%" align="top" alt="深色模式下 listen 的三来源词频、释义占比与中文释义"></a>
+  <a href="./assets/readme/screenshots/v0.3.0/listen-light.jpg"><img src="./assets/readme/screenshots/v0.3.0/listen-light.jpg" width="48%" align="top" alt="浅色模式下 listen 的三来源词频、释义占比与中文释义"></a>
+  <a href="./assets/readme/screenshots/v0.3.0/listen-dark.jpg"><img src="./assets/readme/screenshots/v0.3.0/listen-dark.jpg" width="48%" align="top" alt="深色模式下 listen 的三来源词频、释义占比与中文释义"></a>
 </p>
 
-<p align="center"><sub>左：浅色模式　·　右：深色模式（点击图片查看原尺寸）</sub></p>
+<p align="center"><sub>左：浅色模式　·　右：深色模式（点击图片查看大图）</sub></p>
+
+`secure` 的星级圆点整组移到考试标签下方。
+
+<p align="center">
+  <img src="./assets/readme/screenshots/v0.3.0/secure-light.jpg" width="420" alt="欧路词典中的 secure 词条，五个柯林斯星级圆点在考试标签下方同一行显示">
+</p>
 
 ### 移动端短语与相邻同形词查询
 
@@ -69,38 +75,38 @@ The Little Dict · Refreshed 在不修改词典正文与原始词频数据的前
 
 <p align="center"><sub>左：浅色模式　·　右：深色模式（点击图片查看原尺寸）</sub></p>
 
-## v0.2.1 包含什么
+## v0.3.0 包含什么
 
 - 单词词频统一为 `iWeb → COCA → Spoken` 三来源卡片；
 - 短语保留 `RANK`、`freq.`、`dict.`、`cmpt.` 与 `spoken` 数据；
 - Phrase Frequency 与相邻同形词的 Word Frequency 分开呈现；
 - 隐藏卡片内的词性占比条，保留卡片下方的释义占比胶囊；
-- 可独立控制 iWeb、COCA、Spoken、Phrase Frequency、考试标签与星级；
+- 可独立控制 iWeb、COCA、Spoken、Phrase Frequency、考试标签和柯林斯星级；
 - 当前查询没有对应内容时自动省略设置项，修改后立即生效并自动保存；
 - 设置浮层保持在视口内，点击页面其他位置即可关闭；
-- 兼容 macOS 欧路桌面端的词典标题与折叠结构，桌面端也可使用页面显示设置；
+- 修复点击词典标题和音标时的误跳词，以及查词时词头位置和字号跳动。点击标题可展开或折叠词典；
+- 窄屏空间不足时，柯林斯星级圆点整组换行；
 - 适配 320–720 CSS px、浅色模式与深色模式。
 
 ## 安装
 
-> 仓库不直接保存 `TLD.mdx`。请从项目的 [Releases](https://github.com/M3tar/The_Little_Dict_Refreshed/releases) 页面下载完整词典包，不要下载 GitHub 自动生成的 Source code ZIP。
+请从 [v0.3.0 Release](https://github.com/M3tar/The_Little_Dict_Refreshed/releases/tag/v0.3.0) 的 Assets 下载 `TLD_Refreshed_v0.3.0.zip` 并完整解压。解压目录内的五个文件为 `TLD.mdx`（词典正文）、`TLD.png`（图标）、`config.ini`（配置）、`fy.js`（脚本）和 `p.css`（样式）。
 
-1. 在 Releases 页面下载 `TLD_Refreshed_v0.2.1.zip`；
-2. 解压并确认其中包含 `TLD.mdx`、`TLD.png`、`config.ini`、`fy.js` 和 `p.css`；
-3. 在欧路词典中导入 `TLD.mdx`，并确保其他配套文件与其位于同一目录；
-4. 查询 `listen` 和 `go on`，确认 Word Frequency 与 Phrase Frequency 正常显示。
+在欧路词典配置「外部引用词库路径」时，请选择这个解压目录。 [欧路扩充词库说明](https://docs.eudic.net/1/shi-yong-zhi-yin/tian-jia-kuo-chong-ci-ku)
+
+**安装词库后，请清理欧路词典的缓存，再重新打开应用查词。** 旧缓存可能让页面继续显示旧样式或旧设置。
+
+请勿下载 GitHub 自动生成的 `Source code (zip)`，其中没有词典正文。
 
 ### 为什么仓库中没有 TLD.mdx？
 
 `TLD.mdx` 体积较大，不适合加入 Git 历史。稳定版本通过 GitHub Release 提供包含词典正文和配套界面文件的完整安装包。
 
-若更新后仍看到旧样式或没有设置按钮，请先清除欧路词典缓存并重新打开词典；移动端仍未刷新时再强制停止应用，必要时删除旧词典后重新导入。请勿把“清除数据/清除存储空间”作为常规步骤。
-
 ## 显示配置
 
 `config.ini` 提供首次导入时的默认显示设置。已保存的页面偏好优先。
 
-下表的 `exam` 和 `collins_stars` 对应 v0.3.0。升级时，考试标签和柯林斯星级先继承旧版合并开关的已保存状态，之后分别保存。旧版 `config.ini` 缺少 `collins_stars` 时，星级的首次使用默认值沿用 `exam`。
+升级时，考试标签和柯林斯星级先继承旧版合并开关的已保存状态，之后分别保存。旧版 `config.ini` 缺少 `collins_stars` 时，星级的首次使用默认值沿用 `exam`。
 
 | 配置项 | 默认值 | 作用 |
 | --- | ---: | --- |
@@ -132,15 +138,18 @@ p.css         布局、主题与响应式样式
 
 ## 验证状态
 
-- Android 与 iOS 实机：v0.2.0 完整包均可稳定运行；Android 已核对浅色、深色、单词、短语、相邻同形词及页面显示设置；
-- macOS 欧路桌面端：与 v0.2.1 正式源码一致的 b08 测试构建已通过标题、折叠、设置入口、五项开关、外部点击关闭与偏好持久化验收；
-- 本地 Chromium：v0.2.1 正式源码 40 组回归通过，桌面标题、混合缓存定位、透明外部点击层和折叠浮层专项通过；
+- v0.3.0 正式安装包已通过 Android、iPhone 和电脑版欧路实机验收；
+- 本地 Chromium 50 组回归通过，混合缓存和设置浮层专项通过；
 - 覆盖宽度：320、360、375、390、430、720 CSS px；
 - 正式包：不含测试编号，包内资源与已验收源码一致。
 
 ## 路线图
 
-**0.2.1 · 桌面兼容更新（当前版本）**
+**v0.3.0 · 标签和星级拆分与查词修复（当前版本）**
+
+考试标签和柯林斯星级可独立开关，空间不足时星级整组换行，并修复点击词典标题或音标误跳词、查词时词头跳动的问题。
+
+**v0.2.1 · 桌面兼容更新**
 
 兼容 macOS 欧路桌面端的标题结构，使页面显示设置在移动端与桌面端均可正常使用。
 

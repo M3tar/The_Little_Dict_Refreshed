@@ -1,28 +1,28 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
      width="1200" height="440" viewBox="0 0 1200 440"
      role="img" aria-labelledby="title desc">
-  <title id="title">The Little Dict Refreshed 0.2.1</title>
-  <desc id="desc">稳定查询与可配置词频显示，支持欧路词典移动端与桌面端。</desc>
+  <title id="title">The Little Dict Refreshed v0.3.0</title>
+  <desc id="desc">欧路词典的词频与释义。实机截图展示词频卡片，以及独立的考试标签和柯林斯星级开关。</desc>
   <defs>
-    <clipPath id="light-shot"><rect x="678" y="34" width="466" height="372" rx="22"/></clipPath>
-    <clipPath id="dark-shot"><rect x="1024" y="238" width="120" height="168" rx="16"/></clipPath>
+    <clipPath id="frequency-shot"><rect x="584" y="34" width="433" height="310" rx="18"/></clipPath>
+    <clipPath id="settings-shot"><rect x="919" y="160" width="240" height="244" rx="14"/></clipPath>
   </defs>
 
   <rect width="1200" height="440" rx="30" fill="#101214"/>
-  <path d="M0 352H620" stroke="#293036"/>
+  <path d="M64 347H523" stroke="#394147"/>
   <circle cx="67" cy="56" r="7" fill="#72A9BC"/>
   <text x="86" y="63" fill="#9CA3AA" font-size="18" font-weight="650"
-        font-family="ui-monospace, SFMono-Regular, Menlo, monospace">EUDIC DICTIONARY · v0.2.1</text>
+        font-family="ui-monospace, SFMono-Regular, Menlo, monospace">EUDIC DICTIONARY · v0.3.0</text>
 
   <text x="64" y="146" fill="#F8F5EE" font-size="64" font-weight="760"
         font-family="-apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, sans-serif">The Little Dict</text>
   <text x="64" y="202" fill="#D98B3E" font-size="43" font-weight="700"
         font-family="-apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, sans-serif">Refreshed</text>
 
-  <text x="64" y="264" fill="#E7E2D8" font-size="25" font-weight="540"
-        font-family="-apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, sans-serif">稳定查询与可配置词频显示</text>
-  <text x="64" y="304" fill="#9CA3AA" font-size="20"
-        font-family="-apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, sans-serif">为欧路词典移动端与桌面端重新整理信息层级</text>
+  <text x="64" y="265" fill="#E7E2D8" font-size="35" font-weight="650"
+        font-family="-apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, sans-serif">欧路词典的词频与释义</text>
+  <text x="64" y="309" fill="#B6BCC1" font-size="24"
+        font-family="-apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, sans-serif">考试标签和柯林斯星级可独立开关</text>
 
   <g transform="translate(64 375)">
     <rect width="118" height="38" rx="19" fill="#18313B" stroke="#72A9BC"/>
@@ -36,16 +36,23 @@
           font-family="ui-monospace, SFMono-Regular, Menlo, monospace">Spoken</text>
   </g>
 
-  <rect x="664" y="22" width="492" height="396" rx="27" fill="#070809" stroke="#394147" stroke-width="2"/>
-  <image x="678" y="34" width="466" height="493" preserveAspectRatio="xMidYMin slice"
-         xlink:href="../screenshots/settings-light.png" clip-path="url(#light-shot)"/>
-  <rect x="678" y="34" width="466" height="372" rx="22" fill="none" stroke="#D8D3CA"/>
+  <g id="frequency-card">
+    <rect x="574" y="24" width="453" height="330" rx="25" fill="#070809" stroke="#394147" stroke-width="2"/>
+    <g clip-path="url(#frequency-shot)">
+      <svg x="584" y="34" width="433" height="310" viewBox="1246 458 1234 884">
+        <image width="2622" height="1864" xlink:href="../screenshots/v0.3.0/macos-tough.png"/>
+      </svg>
+    </g>
+    <rect x="584" y="34" width="433" height="310" rx="18" fill="none" stroke="#D8D3CA"/>
+  </g>
 
-  <image x="1024" y="238" width="120" height="188" preserveAspectRatio="xMidYMin slice"
-         xlink:href="../screenshots/go-on-dark.png" clip-path="url(#dark-shot)"/>
-  <rect x="1024" y="238" width="120" height="168" rx="16" fill="none" stroke="#5A6268" stroke-width="2"/>
-
-  <rect x="696" y="368" width="160" height="28" rx="14" fill="#101214" fill-opacity="0.92"/>
-  <text x="776" y="387" text-anchor="middle" fill="#F8F5EE" font-size="14" font-weight="700"
-        font-family="ui-monospace, SFMono-Regular, Menlo, monospace">REAL DEVICE UI</text>
+  <g id="settings-panel">
+    <rect x="910" y="152" width="257" height="260" rx="22" fill="#101214" stroke="#394147" stroke-width="2"/>
+    <g clip-path="url(#settings-shot)">
+      <svg x="919" y="160" width="240" height="244" viewBox="252 132 828 842">
+        <image width="1200" height="1080" xlink:href="../screenshots/v0.3.0/settings-dark.jpg"/>
+      </svg>
+    </g>
+    <rect x="919" y="160" width="240" height="244" rx="14" fill="none" stroke="#605951"/>
+  </g>
 </svg>
